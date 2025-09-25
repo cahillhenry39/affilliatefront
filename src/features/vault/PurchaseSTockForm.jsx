@@ -276,7 +276,7 @@ function PurchaseSTockForm({ setShowPage, singleStock, getCompanuDetails }) {
               <FormRow label={"Quantity"}>
                 <>
                   <SelectInput
-                    value={orderType}
+                    value={quantity}
                     onChange={(e) => setQuantity(e.target.value)}
                   >
                     <option value={""}>Select Quantity</option>
