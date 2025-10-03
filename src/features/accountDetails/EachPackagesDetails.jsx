@@ -130,9 +130,12 @@ function EachPackagesDetails({
   handleSubscribePackage,
   isWorking,
   packageId,
+
+  isCurrentPackage,
 }) {
   const [showPackage, setShowPackage] = useState(isHigher);
-  const [isCurrentPackage, setIsCurrentPackage] = useState("");
+
+  console.log(packageId, isCurrentPackage);
 
   return (
     <StyledPackageContainer>
@@ -188,7 +191,6 @@ function EachPackagesDetails({
         {isHigher ? (
           <button
             onClick={() => {
-              setIsCurrentPackage(packageId);
               handleSubscribePackage(packageId);
             }}
             disabled={isWorking}

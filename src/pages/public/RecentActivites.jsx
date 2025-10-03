@@ -183,7 +183,7 @@ function RecentActivites() {
             <MainSliderContainerMajor>
               <MainSliderContainerSecond $currentIndex={currentIndex}>
                 {successStories?.map((each, i) => {
-                  const { avatar, amount, message } = each;
+                  const { avatar, amount, message, usersPhoneNum } = each;
 
                   return (
                     <MainSliderContainerThird key={i}>
@@ -194,7 +194,9 @@ function RecentActivites() {
                           />
                         </ImageDiv>
 
-                        <CustomersName>Ebuka Gabriel</CustomersName>
+                        <CustomersName>{`User ${
+                          usersPhoneNum?.slice(0, 5) + "****"
+                        }`}</CustomersName>
                         <AmountEarned>+ {formatCurrency(amount)}</AmountEarned>
                         <MessagePara>
                           {formatTextCapitalize(message)}

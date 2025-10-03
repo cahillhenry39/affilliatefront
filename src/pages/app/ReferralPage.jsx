@@ -112,7 +112,7 @@ function ReferralPage() {
                 <>
                   <p>Share across multiple channels</p>
                   <SocialMediaShare
-                    url={`https://taskiit.com/${referralDetails?.referralUrl}`}
+                    url={referralDetails?.referralUrl}
                     isDarkMode={isDarkMode}
                   />
                 </>

@@ -174,7 +174,7 @@ function UserRegister({
   const [phoneNum, setPhoneNum] = useState("");
   const [bankName, setBankName] = useState("");
   const [bankAccount, setBankAccount] = useState("");
-  const [pin, setPin] = useState("");
+  const [pin, setPin] = useState("0000");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
@@ -529,7 +529,7 @@ function UserRegister({
 
         {num === 6 ? (
           <TokenForm>
-            <FormRow color label="4 transaction digit pin" must>
+            {/* <FormRow color label="4 transaction digit pin" must>
               <>
                 <Input
                   disabled={isWorking}
@@ -556,7 +556,7 @@ function UserRegister({
                   <HiOutlineKey />
                 </IconForInput>
               </>
-            </FormRow>
+            </FormRow> */}
 
             <FormRow color label="Your phone Number" must>
               <>

@@ -1,8 +1,8 @@
 export const mainUrl = "https://api.taskiit.com";
 export const backUrl = "https://api.taskiit.com/api/v1";
 
-// export const mainUrl = "http://10.84.29.4:3000";
-// export const backUrl = "http://10.84.29.4:3000/api/v1";
+// export const mainUrl = "http://10.215.190.4:3000";
+// export const backUrl = "http://10.215.190.4:3000/api/v1";
 
 export const SUPABASE_URL = "";
 

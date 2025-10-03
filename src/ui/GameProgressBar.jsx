@@ -52,6 +52,37 @@ const Button = styled.button`
   width: 10rem;
 `;
 
+const Tooltip = styled.div`
+  position: absolute;
+  top: -1.5rem;
+  left: ${({ $progress }) => $progress}%;
+  transform: translateX(-50%);
+  color: var(--color-grey-800);
+  font-weight: 500;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  opacity: 1; /* always visible */
+  pointer-events: none;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 70%; /* attach at bottom of tooltip */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 13px; /* line length */
+    background: linear-gradient(
+      180deg,
+      var(--color-brand-200) 0%,
+      var(--color-brand-700) 100%
+    );
+    border-radius: 2px;
+  }
+`;
+
 // === Main Component ===
 export default function EqualProgressBar({ currentPercentage = 0 }) {
   const [progress, setProgress] = useState(currentPercentage);
@@ -80,6 +111,7 @@ export default function EqualProgressBar({ currentPercentage = 0 }) {
       <ProgressSection>
         <ProgressWrapper>
           <Fill $progress={progress} />
+          <Tooltip $progress={progress}>{progress}%</Tooltip>
         </ProgressWrapper>
       </ProgressSection>
 

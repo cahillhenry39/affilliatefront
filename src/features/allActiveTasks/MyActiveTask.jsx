@@ -205,8 +205,8 @@ function MyActiveTask({
       return;
     }
 
-    if (rateMessage.length < 40) {
-      toast.error("Comment must be above 40 letters long");
+    if (rateMessage.length < 4) {
+      toast.error("Comment must be above 4 letters long");
       return;
     }
 

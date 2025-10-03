@@ -171,12 +171,8 @@ function ReferralContentContainer({ referralUrl, isDarkMode }) {
         <span>Your referral code</span>
 
         <TextReferralLink $isDarkMode={isDarkMode?.toString()}>
-          <p>https://....{referralUrl?.slice(21)}</p>
-          <HiClipboardDocument
-            onClick={() =>
-              copyToClipboard(`https://taskiit.com/${referralUrl}`)
-            }
-          />
+          <p>https://....{referralUrl?.slice(8, 21)}</p>
+          <HiClipboardDocument onClick={() => copyToClipboard(referralUrl)} />
         </TextReferralLink>
       </MainReferralCodeContainer>
 
@@ -185,7 +181,7 @@ function ReferralContentContainer({ referralUrl, isDarkMode }) {
 
         <QRCodeReader>
           <QRCode
-            value={`https://taskiit.com/${referralUrl}` || "Nothing here"}
+            value={referralUrl || "Nothing here"}
             style={{
               height: "auto",
               maxWidth: "60%",

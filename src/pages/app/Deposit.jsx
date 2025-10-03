@@ -113,7 +113,7 @@ function Deposit() {
 
   function handleCreateDeposit() {
     if (!amount) {
-      toast.error("Click or select a bank and amount");
+      toast.error("Select or provide a valid amount to continue");
 
       return;
     }

@@ -8,6 +8,7 @@ import BankAndAccountDetails from "../../features/accountDetails/BankAndAccountD
 import EachPackagesDetails from "../../features/accountDetails/EachPackagesDetails";
 import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 
 const StyledContainer = styled.div`
   overflow: hidden;
@@ -38,12 +39,15 @@ function AccountDetailsPage() {
   const { subscribePackage, isPending } = useSubscribePackage();
   const queryClient = useQueryClient();
 
+  const [isCurrentPackage, setIsCurrentPackage] = useState("");
+
   if (isLoading) return <Spinner />;
 
   const currentTierNum =
     userPackageTitle?.split("")?.[userPackageTitle?.split("")?.length - 1];
 
   function handleSubscribePackage(packageId) {
+    setIsCurrentPackage(packageId);
     const data = {
       packageId,
     };
@@ -86,6 +90,7 @@ function AccountDetailsPage() {
               eachTaskEarns={each?.eachTaskEarns}
               handleSubscribePackage={handleSubscribePackage}
               isWorking={isPending}
+              isCurrentPackage={isCurrentPackage}
             />
           );
         })}

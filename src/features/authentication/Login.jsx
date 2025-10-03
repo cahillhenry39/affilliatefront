@@ -140,7 +140,7 @@ function Login({ searchDB, isActive, setisProcessing }) {
           <>
             <Input
               type="email"
-              placeholder="yourmail@ecample.com"
+              placeholder="yourmail@example.com"
               disabled={isPending}
               value={email}
               onChange={(e) =>
