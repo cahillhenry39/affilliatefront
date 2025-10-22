@@ -13,6 +13,7 @@ import {
 } from "react-icons/fi";
 import HeaderNavigationBack from "../../ui/HeaderNavigationBack";
 import SettingsEachNavigation from "./SettingsEachNavigation";
+import { useNavigate } from "react-router-dom";
 
 const StyledContainer = styled.div`
   display: flex;
@@ -38,9 +39,20 @@ const StyledEachSettingsNavigation = styled.div`
 `;
 
 function MainSettingsNavigation({ handleGoToPage }) {
+  const navigate = useNavigate();
+
+  function handleNavigate() {
+    console.log("fired");
+    navigate("/app/me");
+  }
+
   return (
     <>
-      <HeaderNavigationBack text={"Settings"} />
+      <HeaderNavigationBack
+        text={"Settings"}
+        isNavigattion
+        handleNavigate={handleNavigate}
+      />
 
       <StyledContainer>
         <StyledEachSettingsNavigation>

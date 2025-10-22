@@ -3,7 +3,7 @@ import styled, { keyframes, css } from "styled-components";
 import { formatCurrency } from "../../utils/helpers";
 import { useUpdateActiveSpinners } from "../../services/useSpinnerReward";
 import { useQueryClient } from "@tanstack/react-query";
-import confetti from "canvas-confetti";
+import { getConfetti } from "../../utils/confetti";
 
 // Animations
 const pulseGlow = keyframes`
@@ -240,6 +240,8 @@ const allColors = [
 ];
 
 export default function Spinner({ benefits, currentSpinner }) {
+  const confetti = getConfetti();
+
   const [isSpinning, setIsSpinning] = useState(false);
   const [winner, setWinner] = useState(null);
   const [rotation, setRotation] = useState(0);
@@ -267,6 +269,11 @@ export default function Spinner({ benefits, currentSpinner }) {
 
       setRotation((prev) => prev + finalRotation);
     }
+
+    return () => {
+      const existing = document.querySelector("canvas[style*='z-index: 9999']");
+      if (existing) existing.remove();
+    };
   }, [rewards, setRotation, benefits]);
 
   const spinWheel = () => {

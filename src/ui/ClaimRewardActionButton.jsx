@@ -60,19 +60,6 @@ function ClaimRewardActionButton({
 }) {
   const [progress, setProgress] = useState(0);
 
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     setProgress((prev) => {
-  //       if (prev >= 100) {
-  //         clearInterval(interval);
-  //         return 100;
-  //       }
-  //       return prev + 10;
-  //     });
-  //   }, 500);
-  //   return () => clearInterval(interval);
-  // }, []);
-
   useEffect(() => {
     setProgress(Math.round((totalDone / totalTask) * 100));
   }, [setProgress, totalDone, totalTask]);

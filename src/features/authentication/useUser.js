@@ -54,6 +54,8 @@ export default function useUser() {
     newsLetterEmail: data?.newsLetterEmail,
     currentPercentage: data?.currentPercentage,
     spinningReward: data?.spinningReward,
+    specialPackage: data?.specialPackage,
+    networkType: data?.networkType,
 
     error,
   };

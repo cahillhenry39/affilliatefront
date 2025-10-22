@@ -7,6 +7,7 @@ import ProgressBar from "@ramonak/react-progress-bar";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import TaskHelpContent from "./TaskHelpContent";
+import { useGetCompanyDetails } from "../../services/useCompanyDetails";
 
 const TaskSectionContainer = styled.div`
   display: flex;
@@ -102,6 +103,20 @@ const RulesSpan = styled.span`
   right: 0rem;
 `;
 
+const SpanAlert = styled.span`
+  font-size: 0.61rem;
+  position: absolute;
+  left: 0rem;
+  top: -2rem;
+  background-color: orangered;
+  padding: 0.5rem 1rem;
+  border-top-left-radius: 9px;
+  border-radius: 9px;
+  font-weight: 400;
+  color: #fff;
+  width: fit-content;
+`;
+
 function TaskContent({
   handleGetTodaysTask,
   isPending,
@@ -110,6 +125,7 @@ function TaskContent({
   taskCompleted,
 }) {
   const [showTips, setShowTips] = useState(false);
+  const { getCompanuDetails } = useGetCompanyDetails();
 
   const navigate = useNavigate();
 
@@ -158,6 +174,14 @@ function TaskContent({
           $isHighestSubscription={isHighestSubscription?.toString()}
           $isOverDoneTask={isOverDoneTask?.toString()}
         >
+          {!todaysTasks?.length &&
+          totalTodaysTaskDone === 0 &&
+          getCompanuDetails?.isAirtime ? (
+            <SpanAlert>+ Daily Airtime</SpanAlert>
+          ) : (
+            ""
+          )}
+
           {!isOverDoneTask ? (
             <Button type="secondary" onClick={handleGetTodaysTask}>
               {isPending ? (

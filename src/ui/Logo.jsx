@@ -1,6 +1,5 @@
 import { Link, NavLink } from "react-router-dom";
-import styled, { css } from "styled-components";
-import { device } from "../../mediaQuery";
+import styled from "styled-components";
 import { useDarkMode } from "../context/DarkModeContext";
 
 const ImageComponent = styled(NavLink)``;
@@ -13,17 +12,8 @@ const StyledLogo = styled.div`
   text-align: center;
 `;
 
-const Img = styled.img`
-  height: 20.6rem;
-  width: auto;
-`;
-
-const mainLogoIcon = "/main/taskitlogoicon.png";
 const mainLogoDark = "/main/logomaindark.png";
 const mainLogoLight = "/main/logomainlight.png";
-
-const logoDark = "/main/logodark.png";
-const logoLight = "/main/logolight.png";
 
 function Logo({ background, isPublic, isDarkBackround }) {
   const { isDarkMode } = useDarkMode();

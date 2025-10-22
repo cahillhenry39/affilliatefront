@@ -97,7 +97,7 @@ function HowItWorks() {
             header={"Earn & "}
             spanHeader={"Withdraw"}
             message={
-              "Watch your earnings grow daily. Instant withdrawals to your preferred payment method."
+              "Watch your earnings grow daily. Get instant airtime recharge to your registered phone number, plus instant withdrawals to your preferred payment method."
             }
           />
         </StepsContainer>

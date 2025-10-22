@@ -6,6 +6,7 @@ import Logo from "../../ui/Logo";
 import { useSearchParams } from "react-router-dom";
 import { useDarkMode } from "../../context/DarkModeContext";
 import { useGetAllAvailableBank } from "../../features/depositType/useDepositType";
+import { useGetCompanyDetails } from "../../services/useCompanyDetails";
 
 const StyledRegisterOrLogin = styled.div`
   display: flex;
@@ -79,6 +80,7 @@ const RegisterButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 
   transition: all 0.5s;
   border-radius: 9px;
@@ -120,11 +122,26 @@ const StyledFormDiv = styled.div`
   width: 100%;
 `;
 
+const SpanAlert = styled.span`
+  font-size: 0.61rem;
+  position: absolute;
+  right: -2rem;
+  top: -2rem;
+  background-color: orangered;
+  padding: 0.5rem 1rem;
+  border-top-left-radius: 9px;
+  border-radius: 9px;
+  font-weight: 400;
+  color: #fff;
+  width: fit-content;
+`;
+
 function RegisterOrLogin() {
   const { isDarkMode } = useDarkMode();
   const [isProcessing, setisProcessing] = useState(false);
 
   const { allAvailableBank } = useGetAllAvailableBank();
+  const { getCompanuDetails } = useGetCompanyDetails();
 
   const [searchParams] = useSearchParams();
   const usersReferralData = searchParams?.get("referral");
@@ -173,6 +190,12 @@ function RegisterOrLogin() {
           }}
         >
           <p>Register</p>
+
+          {getCompanuDetails?.isAirtime ? (
+            <SpanAlert>+ Daily Airtime</SpanAlert>
+          ) : (
+            ""
+          )}
         </RegisterButton>
       </ToggleLogin>
 

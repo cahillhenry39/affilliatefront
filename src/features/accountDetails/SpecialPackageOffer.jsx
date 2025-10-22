@@ -1,8 +1,8 @@
 import styled, { css } from "styled-components";
-import { formatCurrency } from "../../utils/helpers";
+import { formatCurrency, formatTextCapitalize } from "../../utils/helpers";
 import LevelBadgeSecond from "../../ui/LevelBadgeSecond";
-import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { useState } from "react";
+import TimerCountDown from "../../ui/TimerCountDown";
 
 const StyledPackageContainer = styled.div`
   display: flex;
@@ -10,8 +10,10 @@ const StyledPackageContainer = styled.div`
   gap: 1rem;
 
   background-color: var(--color-grey-0);
-  padding: 1rem 1rem 0rem;
+  padding: 2rem 1rem 0rem;
   border-radius: 9px;
+
+  border: 3px solid orangered;
 `;
 
 const StyledContainerHeader = styled.div`
@@ -19,6 +21,7 @@ const StyledContainerHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   gap: 2rem;
+  margin-bottom: 1rem;
 
   & svg {
     width: 2rem;
@@ -76,17 +79,18 @@ const StyledContainerContentBody = styled.div`
         `}
 
   & button {
-    background-color: var(--color-green-backColor);
+    background-color: orangered;
     /* background-color: var(--color-brand-700); */
     border: none;
     padding: 1rem 3rem;
     margin-top: 1rem;
     border-radius: 11px;
-    color: var(--color-brand-700);
+    color: #fff;
     font-weight: 600;
 
     &:disabled {
-      color: var(--color-brand-500);
+      opacity: 0.5;
+      cursor: not-allowed;
     }
   }
 `;
@@ -119,22 +123,27 @@ const levelColors = [
   "#f44336", // Level 8 - Red
 ];
 
-function EachPackagesDetails({
+function SpecialPackageOffer({
   currentLevel,
-  isHigher,
+  isSubscribed,
   isCurrent,
   totalDailyTask,
   cost,
   referralBonus,
   eachTaskEarns,
-  handleSubscribePackage,
+  handleSubscribeSpecialPackage,
   isWorking,
-  packageId,
 
   isCurrentPackage,
+
+  title = "",
+  packageOffered,
+  originalCost,
+  endTime,
   isAirtime,
+  packageId,
 }) {
-  const [showPackage, setShowPackage] = useState(isHigher);
+  const [showPackage] = useState(true);
 
   return (
     <StyledPackageContainer>
@@ -147,7 +156,7 @@ function EachPackagesDetails({
           />
 
           <ParaAndTitlt>
-            <p>{`Tier ${currentLevel}`}</p>
+            <p>{title}</p>
 
             {isCurrent ? (
               <CurrentPositionSpan $backColor={levelColors[currentLevel]}>
@@ -159,22 +168,30 @@ function EachPackagesDetails({
           </ParaAndTitlt>
         </StyledImageAndTextContainer>
 
-        {showPackage ? (
-          <IoIosArrowDown onClick={() => setShowPackage(false)} />
-        ) : (
-          <IoIosArrowUp onClick={() => setShowPackage(true)} />
-        )}
+        <TimerCountDown dateTime={endTime} />
       </StyledContainerHeader>
 
       <StyledContainerContentBody $showPackage={showPackage?.toString()}>
         <StyledContainerContent>
-          <span>Daily task limits</span>
-          <p>{totalDailyTask}</p>
+          <span>Offered Package</span>
+          <p>{formatTextCapitalize(packageOffered?.replace("r", "r "))}</p>
         </StyledContainerContent>
 
         <StyledContainerContent>
-          <span>Aprx Daily Earnings</span>
-          <p>{formatCurrency(eachTaskEarns * totalDailyTask)}</p>
+          <span>Subscription Cost</span>
+          <p>{formatCurrency(cost)}</p>
+        </StyledContainerContent>
+
+        <StyledContainerContent>
+          <span>% Discount</span>
+          <p
+            style={{
+              color: "green",
+              fontWeight: 600,
+            }}
+          >
+            -{Math.round(((originalCost - cost) * 100) / originalCost)}%
+          </p>
         </StyledContainerContent>
 
         <StyledContainerContent>
@@ -183,8 +200,8 @@ function EachPackagesDetails({
         </StyledContainerContent>
 
         <StyledContainerContent>
-          <span>Subscription Cost</span>
-          <p>{formatCurrency(cost)}</p>
+          <span>Aprx Daily Earnings</span>
+          <p>{formatCurrency(eachTaskEarns * totalDailyTask)}</p>
         </StyledContainerContent>
 
         {isAirtime ? (
@@ -196,10 +213,12 @@ function EachPackagesDetails({
           ""
         )}
 
-        {isHigher ? (
+        {isSubscribed ? (
+          ""
+        ) : (
           <button
             onClick={() => {
-              handleSubscribePackage(packageId, cost);
+              handleSubscribeSpecialPackage(packageId, cost);
             }}
             disabled={isWorking}
           >
@@ -207,12 +226,10 @@ function EachPackagesDetails({
               ? "Subscribing.."
               : `Subscribe`}
           </button>
-        ) : (
-          ""
         )}
       </StyledContainerContentBody>
     </StyledPackageContainer>
   );
 }
 
-export default EachPackagesDetails;
+export default SpecialPackageOffer;

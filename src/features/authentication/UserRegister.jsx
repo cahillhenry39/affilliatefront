@@ -1,11 +1,7 @@
 import { useEffect, useState } from "react";
 import styled, { css } from "styled-components";
 import { useNavigate } from "react-router-dom";
-import {
-  HiOutlineEmojiHappy,
-  HiOutlineKey,
-  HiOutlineMail,
-} from "react-icons/hi";
+import { HiOutlineEmojiHappy, HiOutlineMail } from "react-icons/hi";
 import {
   HiOutlineHashtag,
   HiOutlineHome,
@@ -27,6 +23,7 @@ import { countries } from "../../utils/ArrayHelper";
 
 import { useSignup } from "./useSignUp";
 import { useGetAReferralWithEmail } from "../referral/useReferral";
+import { EyeClosed, EyeOff } from "lucide-react";
 
 const StyledRegister = styled.div`
   display: flex;
@@ -150,6 +147,18 @@ const NoReferralConfirm = styled.div`
   column-gap: 1rem;
 `;
 
+const PasswordOpenClose = styled.div`
+  position: absolute;
+  right: 1rem;
+
+  & svg {
+    width: 2rem;
+    height: 2rem;
+    color: var(--color-grey-700);
+  }
+  /* top: 0; */
+`;
+
 function UserRegister({
   searchDB,
   usersReferralData,
@@ -170,13 +179,17 @@ function UserRegister({
   );
   const [fullName, setFullName] = useState("");
   const [country, setCountry] = useState("");
+  const [networkType, setNetworkType] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNum, setPhoneNum] = useState("");
   const [bankName, setBankName] = useState("");
   const [bankAccount, setBankAccount] = useState("");
-  const [pin, setPin] = useState("0000");
+  const [pin] = useState("0000");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const navigate = useNavigate();
   const { signup, isPending } = useSignup();
@@ -278,6 +291,7 @@ function UserRegister({
       pin &&
       password &&
       confirmPassword &&
+      networkType &&
       password === confirmPassword
     ) {
       const newUser = {
@@ -292,6 +306,7 @@ function UserRegister({
         balance: 0,
         pin,
         referralInformation,
+        networkType,
       };
 
       signup(newUser, {
@@ -579,6 +594,28 @@ function UserRegister({
                 </IconForInput>
               </>
             </FormRow>
+
+            <FormRow color label="Network Name" must>
+              <>
+                <SelectInput
+                  disabled={isWorking}
+                  placeholder="MTN || AIRTEL || GLO"
+                  type="text"
+                  value={networkType}
+                  onChange={(e) => setNetworkType(e.target.value)}
+                >
+                  {["", "mtn", "glo", "airtel", "9mobile"].map((el, i) => (
+                    <option key={i} value={el}>
+                      {el?.toUpperCase()}
+                    </option>
+                  ))}
+                </SelectInput>
+                <IconForInput>
+                  <HiOutlineHashtag />
+                </IconForInput>
+              </>
+            </FormRow>
+
             {error?.email_tel && (
               <ErrorMessage>{error?.email_tel}</ErrorMessage>
             )}
@@ -590,7 +627,8 @@ function UserRegister({
                 !pin ||
                 String(pin).length !== 4 ||
                 !phoneNum ||
-                !isValidPhonePlain(phoneNum)
+                !isValidPhonePlain(phoneNum) ||
+                !networkType
               }
             />
           </TokenForm>
@@ -673,7 +711,7 @@ function UserRegister({
                 <Input
                   disabled={isWorking}
                   placeholder="***********"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
@@ -681,6 +719,12 @@ function UserRegister({
                 <IconForInput>
                   <HiOutlineLockClosed />
                 </IconForInput>
+
+                <PasswordOpenClose
+                  onClick={() => setShowPassword((val) => !val)}
+                >
+                  {!showPassword ? <EyeClosed /> : <EyeOff />}
+                </PasswordOpenClose>
               </>
             </FormRow>
             <FormRow color label="Confirm password" must>
@@ -688,7 +732,7 @@ function UserRegister({
                 <Input
                   disabled={isWorking}
                   placeholder="***********"
-                  type="password"
+                  type={showConfirmPassword ? "text" : "password"}
                   value={confirmPassword}
                   onChange={(e) => {
                     if (password !== e.target.value) {
@@ -704,6 +748,12 @@ function UserRegister({
                 <IconForInput>
                   <HiOutlineLockClosed />
                 </IconForInput>
+
+                <PasswordOpenClose
+                  onClick={() => setShowConfirmPassword((val) => !val)}
+                >
+                  {!showConfirmPassword ? <EyeClosed /> : <EyeOff />}
+                </PasswordOpenClose>
               </>
             </FormRow>
             {error?.password && <ErrorMessage>{error?.password}</ErrorMessage>}

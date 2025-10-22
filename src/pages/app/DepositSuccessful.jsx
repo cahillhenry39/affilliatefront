@@ -60,31 +60,31 @@ const StytledAnimatedLineDiv = styled.div`
   }
 `;
 
-const AccountDetailsDiv = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  border: 1.5px solid var(--color-grey-100);
-  background-color: var(--color-grey-0);
-  padding: 2rem;
-  gap: 1rem;
-  box-shadow: 1px 2px 4px #0000001c;
+// const AccountDetailsDiv = styled.div`
+//   display: grid;
+//   grid-template-columns: repeat(2, 1fr);
+//   border: 1.5px solid var(--color-grey-100);
+//   background-color: var(--color-grey-0);
+//   padding: 2rem;
+//   gap: 1rem;
+//   box-shadow: 1px 2px 4px #0000001c;
 
-  & div {
-    border-radius: 1px;
-    border: 1px solid var(--color-grey-100);
-    background-color: var(--color-grey-10);
-    padding: 1rem;
+//   & div {
+//     border-radius: 1px;
+//     border: 1px solid var(--color-grey-100);
+//     background-color: var(--color-grey-10);
+//     padding: 1rem;
 
-    & p {
-      font-size: 1.2rem;
-      font-weight: 600;
-    }
+//     & p {
+//       font-size: 1.2rem;
+//       font-weight: 600;
+//     }
 
-    & span {
-      font-size: 1.1rem;
-    }
-  }
-`;
+//     & span {
+//       font-size: 1.1rem;
+//     }
+//   }
+// `;
 
 const EachStatus = styled.div`
   display: flex;
@@ -155,12 +155,12 @@ function DepositSuccessful() {
   const { id } = useParams();
   const { aTransactions, isLoading } = useGetATransaction(id);
   const {
-    depositAccount,
-    depositBank,
-    depositedAccountName,
+    // depositAccount,
+    // depositBank,
+    // depositedAccountName,
     isPaid,
     isSubmitted,
-    reference,
+    // reference,
     status,
   } = aTransactions || {};
 
@@ -168,7 +168,6 @@ function DepositSuccessful() {
     function () {
       const queryTimeOut = setInterval(() => {
         queryClient.invalidateQueries();
-
 
         if (isSubmitted === false) {
           navigate("/", { replace: true });
@@ -228,9 +227,9 @@ function DepositSuccessful() {
 
       {!paymentReceived ? (
         <>
-          <img src="/confirmTransaction.jpg" />
+          <img src="/main/pendingTransaction.png" />
 
-          <AccountDetailsDiv>
+          {/* <AccountDetailsDiv>
             <div>
               <p>Name</p>
               <span>{depositedAccountName}</span>
@@ -248,7 +247,7 @@ function DepositSuccessful() {
               <p>ref</p>
               <span>{reference}</span>
             </div>
-          </AccountDetailsDiv>
+          </AccountDetailsDiv> */}
 
           <ParaSecond>
             We are still waiting for your transaction to arrive. The moment it
@@ -263,7 +262,7 @@ function DepositSuccessful() {
         </>
       ) : (
         <SuccessfulDepositTransaction>
-          <img src="/others/thumb1.png" />
+          <img src="/main/successTransaction.png" />
 
           <p>
             {fullName?.split(" ")?.[0]?.toUpperCase()}, we have received your

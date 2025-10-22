@@ -11,6 +11,7 @@ import Button from "../../ui/Button";
 import IconForInput from "../../ui/IconForInput";
 import { HiOutlineMail } from "react-icons/hi";
 import { HiOutlineLockClosed } from "react-icons/hi2";
+import { EyeClosed, EyeOff } from "lucide-react";
 
 const StyledLogin = styled.div`
   display: flex;
@@ -71,9 +72,22 @@ const ForgottenPassword = styled.div`
   font-size: 1.3rem;
 `;
 
+const PasswordOpenClose = styled.div`
+  position: absolute;
+  right: 1rem;
+
+  & svg {
+    width: 2rem;
+    height: 2rem;
+    color: var(--color-grey-700);
+  }
+  /* top: 0; */
+`;
+
 function Login({ searchDB, isActive, setisProcessing }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const { isPending, login } = useLogin();
@@ -156,7 +170,7 @@ function Login({ searchDB, isActive, setisProcessing }) {
         <FormRow color label="Your Password (min: 6 digits)" must>
           <>
             <Input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="***********"
               disabled={isPending}
               value={password}
@@ -165,6 +179,10 @@ function Login({ searchDB, isActive, setisProcessing }) {
             <IconForInput>
               <HiOutlineLockClosed />
             </IconForInput>
+
+            <PasswordOpenClose onClick={() => setShowPassword((val) => !val)}>
+              {!showPassword ? <EyeClosed /> : <EyeOff />}
+            </PasswordOpenClose>
           </>
         </FormRow>
 

@@ -50,6 +50,18 @@ const EachFormContainerContent = styled.div`
     height: 10rem;
     margin-bottom: 2rem;
   }
+
+  & select {
+    border: none;
+    border-radius: 9px;
+    padding: 1rem 1rem;
+    background-color: var(--color-grey-10);
+    width: 100%;
+
+    &:disabled {
+      background-color: var(--color-grey-50);
+    }
+  }
 `;
 
 const GenderContainer = styled.div`
@@ -107,11 +119,11 @@ const StyledButtonContainer = styled.div`
 `;
 
 function PersonalSettings({ handleUpdateSettings, isWorking }) {
-  const { phoneNum, email, fullName, DOB, address } = useUser();
+  const { phoneNum, email, fullName, DOB, address, networkType } = useUser();
   const [gender, setGender] = useState("male");
 
   const { register, watch, handleSubmit } = useForm({
-    defaultValues: { phoneNum, email, fullName, DOB, address },
+    defaultValues: { phoneNum, email, fullName, DOB, address, networkType },
   });
 
   function handleSubmitData(data) {
@@ -131,9 +143,11 @@ function PersonalSettings({ handleUpdateSettings, isWorking }) {
   const disabled =
     (watch("phoneNum") === phoneNum &&
       watch("DOB") === DOB &&
-      watch("address") === address) ||
+      watch("address") === address &&
+      watch("networkType") === networkType) ||
     !watch("phoneNum") ||
     !watch("DOB") ||
+    !watch("networkType") ||
     !watch("address");
 
   return (
@@ -161,6 +175,18 @@ function PersonalSettings({ handleUpdateSettings, isWorking }) {
         <EachFormContainerContent>
           <LabelContent>Phone Number</LabelContent>
           <input placeholder="Enter phone number" {...register("phoneNum")} />
+        </EachFormContainerContent>
+
+        <EachFormContainerContent>
+          <LabelContent>Network Name</LabelContent>
+
+          <select {...register("networkType")}>
+            {["", "mtn", "glo", "airtel", "9mobile"].map((el, i) => (
+              <option key={i} value={el}>
+                {el?.toUpperCase()}
+              </option>
+            ))}
+          </select>
         </EachFormContainerContent>
 
         <EachFormContainerContent>

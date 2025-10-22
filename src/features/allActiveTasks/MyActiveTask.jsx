@@ -18,8 +18,9 @@ import FormRow from "../../ui/FormRow";
 
 import Textarea from "../../ui/TextArea";
 import ClaimRewardActionButton from "../../ui/ClaimRewardActionButton";
-import confetti from "canvas-confetti";
 import EmptyList from "../../ui/EmptyList";
+import { getConfetti } from "../../utils/confetti";
+import { useGetCompanyDetails } from "../../services/useCompanyDetails";
 
 const coloringAndExpand = keyframes`
 0% {    color: red; transform: scale(1);}
@@ -148,6 +149,20 @@ const EarnAmaount = styled.aside`
   font-size: 1.1rem;
 `;
 
+const SpanAlert = styled.span`
+  font-size: 0.91rem;
+  position: absolute;
+  right: 2.5rem;
+  top: -2rem;
+  background-color: orangered;
+  padding: 0.5rem 1rem;
+  border-top-left-radius: 9px;
+  border-radius: 9px;
+  font-weight: 400;
+  color: #fff;
+  width: fit-content;
+`;
+
 function MyActiveTask({
   todaysTasks,
   totalAmountNotClaimed,
@@ -155,6 +170,7 @@ function MyActiveTask({
   taskPaymentClaimed,
 }) {
   const queryClient = useQueryClient();
+  const confetti = getConfetti();
 
   const [rate, setRate] = useState("");
   const [rateMessage, setRateMessage] = useState("");
@@ -166,10 +182,12 @@ function MyActiveTask({
   const { claimRewardHandler, isPending: isClaimingReward } =
     useClaimTodaysTaskEarnings();
 
+  const { getCompanuDetails } = useGetCompanyDetails();
+
   const isWorking = isPending;
 
   if (!todaysTasks?.length)
-    return <EmptyList message="No Tasks Yet" imageLink={"/timer.svg"} />;
+    return <EmptyList message="Hold, No Tasks Yet" imageLink={"/timer.svg"} />;
 
   function handleClaimReward() {
     claimRewardHandler(
@@ -320,6 +338,12 @@ function MyActiveTask({
       ))}
 
       <ButtonWrapperContainer>
+        {!taskPaymentClaimed && getCompanuDetails?.isAirtime ? (
+          <SpanAlert>Complete & Get {formatCurrency(100)} Airtime</SpanAlert>
+        ) : (
+          ""
+        )}
+
         <ClaimRewardActionButton
           totalDone={
             todaysTasks?.filter(

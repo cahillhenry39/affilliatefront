@@ -9,6 +9,8 @@ import EachPackagesDetails from "../../features/accountDetails/EachPackagesDetai
 import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import SpecialPackageOffer from "../../features/accountDetails/SpecialPackageOffer";
+import { useGetCompanyDetails } from "../../services/useCompanyDetails";
 
 const StyledContainer = styled.div`
   overflow: hidden;
@@ -29,14 +31,18 @@ const StyledContainer = styled.div`
 function AccountDetailsPage() {
   const {
     personalData,
-    // balance,
+    expenseBal,
     bankAccount,
     bankName,
     isLoading,
     userPackageTitle,
     allPackages,
+    specialPackage,
+    phoneNum,
   } = useUser();
   const { subscribePackage, isPending } = useSubscribePackage();
+  const { getCompanuDetails } = useGetCompanyDetails();
+
   const queryClient = useQueryClient();
 
   const [isCurrentPackage, setIsCurrentPackage] = useState("");
@@ -46,10 +52,35 @@ function AccountDetailsPage() {
   const currentTierNum =
     userPackageTitle?.split("")?.[userPackageTitle?.split("")?.length - 1];
 
-  function handleSubscribePackage(packageId) {
+  function handleSubscribePackage(packageId, cost) {
+    if (expenseBal < cost) {
+      toast.error("Low balance. Make a deposit to continue");
+      return;
+    }
+
     setIsCurrentPackage(packageId);
     const data = {
       packageId,
+    };
+
+    subscribePackage(data, {
+      onSuccess: () => {
+        queryClient.invalidateQueries();
+        toast.success("Package scubscription was successful");
+      },
+    });
+  }
+
+  function handleSubscribeSpecialPackage(packageId, cost) {
+    if (expenseBal < cost) {
+      toast.error("Insufficient balance. Please deposit to continue");
+      return;
+    }
+
+    setIsCurrentPackage(packageId);
+    const data = {
+      packageId,
+      isSpecialSubscription: true,
     };
 
     subscribePackage(data, {
@@ -71,6 +102,36 @@ function AccountDetailsPage() {
           bankName={bankName}
         />
 
+        {specialPackage?.map((each, i) => {
+          const levelNumber =
+            each?.packageOffered?.split("")?.[
+              each?.packageOffered?.split("")?.length - 1
+            ];
+
+          return (
+            <SpecialPackageOffer
+              key={i}
+              packageId={each?.id}
+              currentLevel={levelNumber}
+              title={each?.title}
+              packageOffered={each?.packageOffered} //usePakcgae offered
+              cost={each?.cost}
+              originalCost={each?.originalCost}
+              referralBonus={each?.referralBonus}
+              eachTaskEarns={each?.eachTaskEarns}
+              totalDailyTask={each?.totalDailyTask}
+              isSubscribed={currentTierNum > 0}
+              endTime={each?.endTime}
+              isAirtime={getCompanuDetails?.isAirtime}
+              handleSubscribeSpecialPackage={handleSubscribeSpecialPackage}
+              isWorking={isPending}
+              isCurrentPackage={isCurrentPackage}
+
+              //welcomeBonus
+            />
+          );
+        })}
+
         {allPackages?.map((each, i) => {
           const levelNumber =
             each?.title?.split("")?.[each?.title?.split("")?.length - 1];
@@ -91,6 +152,7 @@ function AccountDetailsPage() {
               handleSubscribePackage={handleSubscribePackage}
               isWorking={isPending}
               isCurrentPackage={isCurrentPackage}
+              isAirtime={getCompanuDetails?.isAirtime}
             />
           );
         })}

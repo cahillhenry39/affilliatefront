@@ -3,6 +3,7 @@ import NavigationHeader from "../../features/Home/NavigationHeader";
 import LogoMarquee from "../../ui/LogoMarquee";
 import { useNavigate } from "react-router-dom";
 import useUser from "../../features/authentication/useUser";
+import { useGetCompanyDetails } from "../../services/useCompanyDetails";
 
 const StyledDisplayOther = styled.section`
   /* ✅ use CSS variable */
@@ -78,6 +79,19 @@ const GetStartedButton = styled.button`
   font-weight: 600;
   background-color: var(--color-brand-800);
   border: none;
+  position: relative;
+
+  & span {
+    font-size: 0.91rem;
+    position: absolute;
+    right: 1rem;
+    top: -2rem;
+    background-color: orangered;
+    padding: 0.5rem 1rem;
+    border-top-left-radius: 9px;
+    border-radius: 9px;
+    font-weight: 400;
+  }
 `;
 const DemoButton = styled.button`
   background-color: transparent;
@@ -91,6 +105,7 @@ const MarqueeContainer = styled.div`
 
 function Home() {
   const { isAuthenticated } = useUser();
+  const { getCompanuDetails } = useGetCompanyDetails();
 
   const navigate = useNavigate();
 
@@ -118,6 +133,11 @@ function Home() {
           ) : (
             <GetStartedButton onClick={() => navigate("/member/auth")}>
               Get Started Now
+              {getCompanuDetails?.isAirtime ? (
+                <span>+ Free Daily Airtime</span>
+              ) : (
+                ""
+              )}
             </GetStartedButton>
           )}
           <DemoButton onClick={() => navigate("/faq")}>FAQ</DemoButton>

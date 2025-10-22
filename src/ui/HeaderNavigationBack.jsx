@@ -39,6 +39,7 @@ function HeaderNavigationBack({
   modalTitle,
 }) {
   const navigate = useNavigate();
+
   return (
     <HeaderNavigationContainer>
       <MainContentContainer

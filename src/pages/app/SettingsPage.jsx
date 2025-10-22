@@ -1,8 +1,8 @@
 import styled from "styled-components";
 
 import MainSettingsLayout from "../../features/settings/MainSettingsLayout";
-import { useState } from "react";
 import MainSettingsNavigation from "../../features/settings/MainSettingsNavigation";
+import { useSearchParams } from "react-router-dom";
 
 const StyledContainer = styled.div`
   position: relative;
@@ -36,14 +36,19 @@ const StyledSelectBankContainer = styled.div`
 `;
 
 function SettingsPage() {
-  const [showPage, setShowPage] = useState("main");
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Get the current page from search params, or default to "main"
+  const showPage = searchParams.get("page") || "main";
 
   function handleGoToPage(page) {
-    setShowPage(page);
+    setSearchParams({ page }); // updates ?page=xxx
   }
 
   function handleReturnMainPage() {
-    setShowPage("main");
+    console.log(showPage);
+
+    setSearchParams({ page: "main" }); // resets to ?page=main
   }
 
   return (

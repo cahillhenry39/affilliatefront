@@ -66,16 +66,3 @@ function ModalApproval({
 }
 
 export default ModalApproval;
-
-//  <Button onClick={handleGiveLoan} type="adminBtn" disabled={isWorking}>
-//    {isWorking ? (
-//      <SpinnerAndText>
-//        <SpinnerMini /> Processing...
-//      </SpinnerAndText>
-//    ) : (
-//      `Provide ${formatCurrency(amount)}`
-//    )}
-//  </Button>;
-//  {
-//    lowBalance && <AlertScreen resetBalance={setLowBalance} amount={amount} />;
-//  }

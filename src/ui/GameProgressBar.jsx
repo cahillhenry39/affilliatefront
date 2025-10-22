@@ -111,7 +111,9 @@ export default function EqualProgressBar({ currentPercentage = 0 }) {
       <ProgressSection>
         <ProgressWrapper>
           <Fill $progress={progress} />
-          <Tooltip $progress={progress}>{progress}%</Tooltip>
+          <Tooltip $progress={progress}>
+            {progress >= 100 ? 100 : progress}%
+          </Tooltip>
         </ProgressWrapper>
       </ProgressSection>
 
