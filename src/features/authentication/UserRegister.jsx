@@ -514,7 +514,6 @@ function UserRegister({
               <>
                 <SelectInput
                   disabled={isWorking}
-                  placeholder="BM1*******"
                   type="text"
                   value={country}
                   onChange={(e) => setCountry(e.target.value)}

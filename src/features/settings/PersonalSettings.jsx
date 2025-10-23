@@ -4,6 +4,7 @@ import { IoIosRadioButtonOff, IoIosRadioButtonOn } from "react-icons/io";
 import styled from "styled-components";
 import useUser from "../authentication/useUser";
 import { formatTextCapitalize } from "../../utils/helpers";
+import toast from "react-hot-toast";
 
 const StyledContainer = styled.div`
   margin-top: -2rem;
@@ -127,13 +128,22 @@ function PersonalSettings({ handleUpdateSettings, isWorking }) {
   });
 
   function handleSubmitData(data) {
-    const route = "personal";
-    const newData = {
-      ...data,
-      gender,
-    };
-    // console.log(newData);
-    handleUpdateSettings(route, newData);
+    if (data?.phoneNum?.length !== 11) {
+      toast.error("Phone number is incorrect");
+      return;
+    }
+
+    if (/^\d{0,11}$/.test(data?.phoneNum)) {
+      const route = "personal";
+      const newData = {
+        ...data,
+        gender,
+      };
+      // console.log(newData);
+      handleUpdateSettings(route, newData);
+    } else {
+      toast.error("Invalid phone number");
+    }
   }
 
   function handleSelectGender(gender) {
@@ -174,7 +184,11 @@ function PersonalSettings({ handleUpdateSettings, isWorking }) {
 
         <EachFormContainerContent>
           <LabelContent>Phone Number</LabelContent>
-          <input placeholder="Enter phone number" {...register("phoneNum")} />
+          <input
+            placeholder="Enter phone number"
+            type="tel"
+            {...register("phoneNum")}
+          />
         </EachFormContainerContent>
 
         <EachFormContainerContent>

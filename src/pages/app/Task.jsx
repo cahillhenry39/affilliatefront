@@ -71,7 +71,7 @@ function Task() {
     <>
       <TaskSection>
         <Imagediv>
-          <img src="/gif/3.gif" />
+          <img src="/main/bannerTask.jpg" />
         </Imagediv>
 
         <LogoMarquee />

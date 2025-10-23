@@ -46,8 +46,6 @@ function SettingsPage() {
   }
 
   function handleReturnMainPage() {
-    console.log(showPage);
-
     setSearchParams({ page: "main" }); // resets to ?page=main
   }
 

@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 import useUser from "../features/authentication/useUser";
 import { useDarkMode } from "../context/DarkModeContext";
+import LoadingDots from "./LoadingDots";
 
 const FullPage = styled.div`
   height: 100vh;
@@ -15,6 +16,7 @@ const FullPage = styled.div`
 
 const ImageComponent = styled.div`
   margin-top: -8rem;
+  text-align: center;
 `;
 
 const Image = styled.img`
@@ -45,11 +47,12 @@ function ProtectedRoute({ children }) {
       <FullPage>
         <ImageComponent to="/">
           <Image src={src} alt="Taskiit services Logo" />
+          <LoadingDots text="Loading" maxDots={4} />
         </ImageComponent>
       </FullPage>
     );
 
-  if (isAuthenticated) return children;
+  if (isAuthenticated && !isLoading) return children;
 }
 
 export default ProtectedRoute;

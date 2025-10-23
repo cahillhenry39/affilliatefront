@@ -11,6 +11,7 @@ import { BadgePercent, Settings, ListCheck, LucideRocket } from "lucide-react";
 import GameProgressBar from "../../ui/GameProgressBar";
 import useUser from "../../features/authentication/useUser";
 import { useEffect, useState } from "react";
+import DasboardSlider from "../../features/dashboard/DasboardSlider";
 
 const spin = keyframes`
   from { transform: rotate(0deg); }
@@ -59,20 +60,6 @@ const DashboardSection = styled.section`
   flex-direction: column;
   gap: 1.5rem;
   padding: 0rem 1rem;
-`;
-
-const Imagediv = styled.div`
-  width: 100%;
-  display: flex;
-  border-radius: 9px;
-  overflow: hidden;
-
-  & img {
-    height: 12rem;
-    width: 100%;
-    margin: 0 auto;
-    box-shadow: 0 1px 5px #00000011;
-  }
 `;
 
 const ActionBoxDiv = styled.div`
@@ -220,9 +207,7 @@ function Dashboard() {
 
         <GameProgressBar currentPercentage={currentPercentage} />
 
-        <Imagediv>
-          <img src="/gif/5.gif" />
-        </Imagediv>
+        <DasboardSlider />
 
         {/* <Headings type="h3">
         <span>Quick Actions</span>
