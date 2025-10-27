@@ -5,6 +5,7 @@ import styled from "styled-components";
 import useUser from "../authentication/useUser";
 import { formatTextCapitalize } from "../../utils/helpers";
 import toast from "react-hot-toast";
+import { countries, nigerianStates } from "../../utils/ArrayHelper";
 
 const StyledContainer = styled.div`
   margin-top: -2rem;
@@ -120,11 +121,31 @@ const StyledButtonContainer = styled.div`
 `;
 
 function PersonalSettings({ handleUpdateSettings, isWorking }) {
-  const { phoneNum, email, fullName, DOB, address, networkType } = useUser();
+  const {
+    phoneNum,
+    email,
+    fullName,
+    DOB,
+    address,
+    networkType,
+    country,
+    state,
+    city,
+  } = useUser();
   const [gender, setGender] = useState("male");
 
   const { register, watch, handleSubmit } = useForm({
-    defaultValues: { phoneNum, email, fullName, DOB, address, networkType },
+    defaultValues: {
+      phoneNum,
+      email,
+      fullName,
+      DOB,
+      address,
+      networkType,
+      country,
+      state,
+      city,
+    },
   });
 
   function handleSubmitData(data) {
@@ -154,10 +175,16 @@ function PersonalSettings({ handleUpdateSettings, isWorking }) {
     (watch("phoneNum") === phoneNum &&
       watch("DOB") === DOB &&
       watch("address") === address &&
+      watch("country") === country &&
+      watch("city") === city &&
+      watch("state") === state &&
       watch("networkType") === networkType) ||
     !watch("phoneNum") ||
     !watch("DOB") ||
     !watch("networkType") ||
+    !watch("country") ||
+    !watch("city") ||
+    !watch("state") ||
     !watch("address");
 
   return (
@@ -201,6 +228,36 @@ function PersonalSettings({ handleUpdateSettings, isWorking }) {
               </option>
             ))}
           </select>
+        </EachFormContainerContent>
+
+        <EachFormContainerContent>
+          <LabelContent>Country</LabelContent>
+
+          <select {...register("country")}>
+            {countries.map((el, i) => (
+              <option key={i} value={el?.value}>
+                {el?.option?.toUpperCase()}
+              </option>
+            ))}
+          </select>
+        </EachFormContainerContent>
+
+        <EachFormContainerContent>
+          <LabelContent>State</LabelContent>
+
+          <select {...register("state")}>
+            {nigerianStates.map((el, i) => (
+              <option key={i} value={el?.value}>
+                {el?.option?.toUpperCase()}
+              </option>
+            ))}
+          </select>
+        </EachFormContainerContent>
+
+        <EachFormContainerContent>
+          <LabelContent>City</LabelContent>
+
+          <input placeholder="Enter yur city" {...register("city")} />
         </EachFormContainerContent>
 
         <EachFormContainerContent>

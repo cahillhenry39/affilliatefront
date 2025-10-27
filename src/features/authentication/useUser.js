@@ -56,6 +56,9 @@ export default function useUser() {
     spinningReward: data?.spinningReward,
     specialPackage: data?.specialPackage,
     networkType: data?.networkType,
+    country: data?.country,
+    state: data?.state,
+    city: data?.city,
 
     error,
   };

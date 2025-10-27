@@ -19,11 +19,11 @@ import ButtonNextAndBack from "../../ui/ButtonNextAndBack";
 import SelectInput from "../../ui/SelectInput";
 
 import { isValidPhonePlain } from "../../utils/helpers";
-import { countries } from "../../utils/ArrayHelper";
+import { countries, nigerianStates } from "../../utils/ArrayHelper";
 
 import { useSignup } from "./useSignUp";
 import { useGetAReferralWithEmail } from "../referral/useReferral";
-import { EyeClosed, EyeOff } from "lucide-react";
+import { EyeClosed, EyeOff, Home, WholeWord } from "lucide-react";
 
 const StyledRegister = styled.div`
   display: flex;
@@ -179,6 +179,8 @@ function UserRegister({
   );
   const [fullName, setFullName] = useState("");
   const [country, setCountry] = useState("");
+  const [state, setState] = useState("");
+  const [city, setCity] = useState("");
   const [networkType, setNetworkType] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNum, setPhoneNum] = useState("");
@@ -292,6 +294,8 @@ function UserRegister({
       password &&
       confirmPassword &&
       networkType &&
+      state &&
+      city &&
       password === confirmPassword
     ) {
       const newUser = {
@@ -307,6 +311,8 @@ function UserRegister({
         pin,
         referralInformation,
         networkType,
+        state,
+        city,
       };
 
       signup(newUser, {
@@ -529,12 +535,50 @@ function UserRegister({
                 </IconForInput>
               </>
             </FormRow>
+
+            <FormRow color label="State" must>
+              <>
+                <SelectInput
+                  disabled={isWorking}
+                  type="text"
+                  value={state}
+                  onChange={(e) => setState(e.target.value)}
+                >
+                  {nigerianStates.map((el, i) => (
+                    <option key={i} value={el.value}>
+                      {el.option}
+                    </option>
+                  ))}
+                </SelectInput>
+                <IconForInput>
+                  <WholeWord />
+                </IconForInput>
+              </>
+            </FormRow>
+
+            <FormRow color label="Country" must>
+              <>
+                <Input
+                  disabled={isWorking}
+                  placeholder="Enter your city"
+                  value={city}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    setCity(value);
+                  }}
+                />
+                <IconForInput>
+                  <Home />
+                </IconForInput>
+              </>
+            </FormRow>
+
             {error?.country && <ErrorMessage>{error?.country}</ErrorMessage>}
 
             <ButtonNextAndBack
               nextFunction={handleRegister}
               backFunction={handleGoBack}
-              disableNext={!country}
+              disableNext={!country || !state || !city}
             />
           </TokenForm>
         ) : (
