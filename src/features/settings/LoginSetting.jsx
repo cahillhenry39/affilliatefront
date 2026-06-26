@@ -1,0 +1,124 @@
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import styled from "styled-components";
+import useUser from "../authentication/useUser";
+
+const StyledContainer = styled.div``;
+
+const StyledFormContainerContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem 1rem;
+  margin: 0rem 1rem;
+  border-radius: 9px;
+  background-color: var(--color-grey-0);
+`;
+
+const EachFormContainerContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.51rem;
+  font-size: 1.3rem;
+
+  & input {
+    border: none;
+    border-radius: 9px;
+    padding: 1rem 1rem;
+    background-color: var(--color-grey-10);
+  }
+`;
+
+const LabelContent = styled.label`
+  font-size: 1.3rem;
+  color: var(--color-grey-500);
+  font-weight: 600;
+`;
+
+const StyledButtonContainer = styled.div`
+  margin: 2rem 3rem;
+  display: flex;
+
+  & button {
+    padding: 1rem;
+    width: 100%;
+    border: none;
+    border-radius: 22px;
+    background-color: var(--color-green-backColor);
+    color: var(--color-brand-800);
+    font-weight: 600;
+
+    &:disabled {
+      color: var(--color-brand-200);
+      font-weight: 500;
+    }
+  }
+`;
+
+function LoginSetting({ handleUpdateSettings, isWorking }) {
+  const { register, watch, handleSubmit } = useForm();
+  const { email } = useUser();
+
+  function handleSubmitData(data) {
+    const { password, confirmNewPassword, newPassword } = data;
+
+    if (!newPassword || !confirmNewPassword || !password) {
+      toast.error("All fields are required");
+      return;
+    }
+
+    if (newPassword !== confirmNewPassword) {
+      toast.error("New Password must match the confirm password");
+      return;
+    }
+
+    const route = "password";
+    const newData = {
+      ...data,
+      email,
+    };
+    handleUpdateSettings(route, newData);
+  }
+
+  const disabled =
+    !watch("password") || !watch("confirmNewPassword") || !watch("newPassword");
+
+  return (
+    <StyledContainer>
+      <StyledFormContainerContainer>
+        <EachFormContainerContent>
+          <LabelContent>Password</LabelContent>
+
+          <input
+            placeholder="Enter current password"
+            {...register("password")}
+          />
+        </EachFormContainerContent>
+
+        <EachFormContainerContent>
+          <LabelContent>New Password</LabelContent>
+          <input
+            placeholder="Enter new password"
+            {...register("newPassword")}
+          />
+        </EachFormContainerContent>
+
+        <EachFormContainerContent>
+          <LabelContent>Confirm Password</LabelContent>
+          <input
+            placeholder="Re-enter new password"
+            {...register("confirmNewPassword")}
+          />
+        </EachFormContainerContent>
+      </StyledFormContainerContainer>
+
+      <StyledButtonContainer>
+        <button disabled={disabled} onClick={handleSubmit(handleSubmitData)}>
+          {isWorking ? "Processing..." : `Confirm`}
+        </button>
+      </StyledButtonContainer>
+    </StyledContainer>
+  );
+}
+
+export default LoginSetting;
