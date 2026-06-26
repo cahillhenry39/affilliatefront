@@ -12,7 +12,11 @@ import {
 import styled from "styled-components";
 import toast from "react-hot-toast";
 import TimerCountDown from "../../ui/TimerCountDown";
-import { formatCurrency, getMinsAndSecs } from "../../utils/helpers";
+import {
+  formatCurrency,
+  formatTextCapitalize,
+  getMinsAndSecs,
+} from "../../utils/helpers";
 
 const BankCardDiv = styled.div`
   display: flex;
@@ -169,7 +173,7 @@ function TimerAndBankAndRef({ setTransactionError, transactionDdetails }) {
       }
       if (hasCopiedText) toast.success(`${copiedText} copied`);
     },
-    [reference, amount, setTransactionError, hasCopiedText, copiedText]
+    [reference, amount, setTransactionError, hasCopiedText, copiedText],
   );
   return (
     <>
@@ -181,7 +185,10 @@ function TimerAndBankAndRef({ setTransactionError, transactionDdetails }) {
               <p>Bank Transfer Details</p>
             </div>
             <NoticeWarning>
-              {userFullName ? userFullName?.split(" ")?.[0] : 'Please'}, do not refresh this page.
+              {userFullName
+                ? formatTextCapitalize(userFullName?.split(" ")?.[0])
+                : "Please"}
+              , do not refresh this page.
             </NoticeWarning>
           </TransacitonTitleHeader>
         </TimerDiv>
@@ -195,7 +202,7 @@ function TimerAndBankAndRef({ setTransactionError, transactionDdetails }) {
             </LeftDetailContainer>
 
             <RightDetailContainer>
-              <p>{depositBank}</p>
+              <p>{formatTextCapitalize(depositBank)}</p>
             </RightDetailContainer>
           </EachDetailContainer>
 
@@ -206,7 +213,7 @@ function TimerAndBankAndRef({ setTransactionError, transactionDdetails }) {
             </LeftDetailContainer>
 
             <RightDetailContainer>
-              <p>{depositedAccountName}</p>
+              <p>{formatTextCapitalize(depositedAccountName)}</p>
             </RightDetailContainer>
           </EachDetailContainer>
           <EachDetailContainer>

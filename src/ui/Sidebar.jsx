@@ -28,6 +28,7 @@ const StyledSidebarMobile = styled.aside`
     right: 0;
 
     background-color: var(--color-grey-0);
+    border-top: 1px solid var(--color-grey-10);
     display: flex;
     padding: 0.6rem 1rem;
     gap: 1.2rem;
