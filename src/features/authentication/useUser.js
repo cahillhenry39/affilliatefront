@@ -11,18 +11,18 @@ import {
 } from "../../services/apiAuth";
 
 export default function useUser() {
-  const { isLoading, data, error } = useQuery({
+  const { isLoading, data, error, isError } = useQuery({
     queryKey: ["user"],
     queryFn: getCurrentUser,
+    retry: false,
+
     // refetchInterval: 1000,
   });
 
   return {
     isLoading,
     data,
-    isAuthenticated:
-      data?.role === "authenticated" &&
-      error?.message?.toLowerCase() !== "invalid session",
+    isAuthenticated: !!data && !isError,
     balance: data?.balance,
     expenseBal: data?.expenseBal,
     bankAccount: data?.bankAccount,

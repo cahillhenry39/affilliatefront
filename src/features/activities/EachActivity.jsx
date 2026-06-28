@@ -79,7 +79,8 @@ function EachActivity({ activity }) {
         </ImageDiv>
         <div>
           <CongratulationPara>
-            Congratulations {usersPhoneNum?.slice(0, 4) + "******"}
+            Congratulations{" "}
+            {usersPhoneNum ? usersPhoneNum?.slice(0, 4) + "******" : ""}
           </CongratulationPara>
           <MessagePara>{message}</MessagePara>
         </div>

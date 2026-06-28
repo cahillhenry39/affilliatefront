@@ -26,8 +26,7 @@ export async function globalGetQueryURL({ url }) {
       // 🔐 SESSION EXPIRED HANDLING
       if (result.status === 401) {
         console.warn("⚠️ Session expired, logging out...");
-        // window.location.href = "/member/auth"; // or use react-router navigate
-        return;
+        throw new Error("Unauthorized");
       }
 
       throw new Error(`Request failed: ${result.status}`);
@@ -46,6 +45,7 @@ export async function globalGetQueryURL({ url }) {
     }
   } catch (err) {
     console.error("❌ API Error:", err);
+    throw err;
   }
 }
 

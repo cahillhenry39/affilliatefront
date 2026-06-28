@@ -1,4 +1,9 @@
-import { SUPABASE_URL, globalPostQueryURL, supabase } from "./supabase";
+import {
+  SUPABASE_URL,
+  globalGetQueryURL,
+  globalPostQueryURL,
+  supabase,
+} from "./supabase";
 
 export async function signup(data) {
   const url = "/user/register";
@@ -12,7 +17,7 @@ export async function login(data) {
 
 export async function getCurrentUser() {
   const url = "/user/getuser";
-  return await globalPostQueryURL({ url });
+  return await globalGetQueryURL({ url });
 }
 
 export async function updateCurrentUser(data) {
@@ -105,7 +110,7 @@ export async function forgottenPassword(data) {
     data,
     {
       redirectTo: "https://www.bomerg.com/reset_password/auth",
-    }
+    },
   );
 
   if (error) {
