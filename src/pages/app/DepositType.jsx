@@ -40,9 +40,7 @@ function DepositType() {
   const { updateTransction, isPending: isUpdating } = useUpdateTransaction();
 
   function handleFinishTransaction() {
-    const updatedData = {
-      isSubmitted: true,
-    };
+    const updatedData = {};
     updateTransction(
       {
         id,
@@ -52,16 +50,16 @@ function DepositType() {
         onSuccess: (data) => {
           const { id } = data[0];
           navigate(
-            `/app/deposit_successful/${id}?ref=${aTransactions.reference}`
+            `/app/deposit_successful/${id}?ref=${aTransactions.reference}`,
           );
         },
-      }
+      },
     );
   }
 
   return (
     <>
-      <HeaderTitleTop text={"Deposit Transaction"} icon={<HiMiniBanknotes />} />
+      <HeaderTitleTop text={"Bank Transfer"} icon={<HiMiniBanknotes />} />
 
       {isLoading ? (
         <TaskLoader />

@@ -51,7 +51,8 @@ const TransacitonTitleHeader = styled.div`
 
   & p {
     font-weight: 600;
-    font-size: 1.8rem;
+    font-size: 1.5rem;
+    text-align: center;
   }
 
   & SVG {
@@ -89,7 +90,7 @@ const AccountDiv = styled.div`
 
 const EachDetailContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   padding: 0.51rem 0;
 
   &:not(:last-of-type) {
@@ -99,29 +100,32 @@ const EachDetailContainer = styled.div`
 
 const LeftDetailContainer = styled.div`
   display: flex;
+
   align-items: center;
   gap: 0.51rem;
 
   & p {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     color: var(--color-grey-400);
     margin-top: 0.3rem;
   }
 
   & svg {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1.2rem;
+    height: 1.2rem;
     color: var(--color-brand-700);
   }
 `;
 
 const RightDetailContainer = styled.div`
   display: flex;
+  justify-content: space-between;
+
   align-items: center;
   gap: 0.51rem;
 
   & p {
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     color: var(--color-brand-700);
     margin-top: 0.3rem;
     font-weight: 600;
@@ -181,8 +185,7 @@ function TimerAndBankAndRef({ setTransactionError, transactionDdetails }) {
         <TimerDiv>
           <TransacitonTitleHeader>
             <div>
-              <HiMiniHomeModern />
-              <p>Bank Transfer Details</p>
+              <p>Deposit Into The Account Below</p>
             </div>
             <NoticeWarning>
               {userFullName

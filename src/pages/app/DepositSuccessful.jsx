@@ -8,6 +8,7 @@ import { useGetATransaction } from "../../features/transaction/useTransaction";
 import { useEffect, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import useUser from "../../features/authentication/useUser";
+import HeaderTitleTop from "../../ui/HeaderTitleTop";
 const rotate = keyframes`
   to {
     transform: rotate(1turn)
@@ -18,7 +19,7 @@ const StytledDepositSuccess = styled.section`
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  margin: 6rem auto;
+  margin: 1rem auto 6rem auto;
 
   overflow-y: scroll;
   height: 90vh;
@@ -188,48 +189,59 @@ function DepositSuccessful() {
       isSubmitted,
       paymentReceived,
       setReceived,
-    ]
+    ],
   );
 
   if (isLoading) return <Spinner />;
 
   return (
-    <StytledDepositSuccess>
-      <StytledAnimatedLineDiv>
-        <EachStatus>
-          <SvgNormLDiv>
-            <HiCheckBadge />
-          </SvgNormLDiv>
-          <Para>submited</Para>
-        </EachStatus>
+    <>
+      {!paymentReceived ? (
+        <HeaderTitleTop text={"Waiting For Your Transfer"} />
+      ) : (
+        ""
+      )}
 
-        {paymentReceived ? (
-          <h3>Successful</h3>
-        ) : (
-          <AnimationDiv>
-            <InfinityLoading />
-          </AnimationDiv>
-        )}
-
-        <EachStatus>
-          {paymentReceived ? (
+      <StytledDepositSuccess
+        style={{
+          marginTop: !paymentReceived ? "" : "6rem",
+        }}
+      >
+        <StytledAnimatedLineDiv>
+          <EachStatus>
             <SvgNormLDiv>
               <HiCheckBadge />
             </SvgNormLDiv>
+            <Para>submited</Para>
+          </EachStatus>
+
+          {paymentReceived ? (
+            <h3>Successful</h3>
           ) : (
-            <SVGDiv>
-              <HiCog8Tooth />
-            </SVGDiv>
+            <AnimationDiv>
+              <InfinityLoading />
+            </AnimationDiv>
           )}
-          {paymentReceived ? <Para>received</Para> : <Para>awaiting</Para>}
-        </EachStatus>
-      </StytledAnimatedLineDiv>
 
-      {!paymentReceived ? (
-        <>
-          <img src="/main/pendingTransaction.png" />
+          <EachStatus>
+            {paymentReceived ? (
+              <SvgNormLDiv>
+                <HiCheckBadge />
+              </SvgNormLDiv>
+            ) : (
+              <SVGDiv>
+                <HiCog8Tooth />
+              </SVGDiv>
+            )}
+            {paymentReceived ? <Para>received</Para> : <Para>awaiting</Para>}
+          </EachStatus>
+        </StytledAnimatedLineDiv>
 
-          {/* <AccountDetailsDiv>
+        {!paymentReceived ? (
+          <>
+            <img src="/main/pendingTransaction.png" />
+
+            {/* <AccountDetailsDiv>
             <div>
               <p>Name</p>
               <span>{depositedAccountName}</span>
@@ -249,34 +261,38 @@ function DepositSuccessful() {
             </div>
           </AccountDetailsDiv> */}
 
-          <ParaSecond>
-            We are still waiting for your transaction to arrive. The moment it
-            arrive, we will credit you immediately.
-          </ParaSecond>
+            <ParaSecond>
+              We are still waiting for your transaction to arrive. The moment it
+              arrive, we will credit you immediately.
+            </ParaSecond>
 
-          <StytledButton>
-            <Link to="/app">
-              <Button type="primary">You can go back home</Button>
-            </Link>
-          </StytledButton>
-        </>
-      ) : (
-        <SuccessfulDepositTransaction>
-          <img src="/main/successTransaction.png" />
+            <StytledButton>
+              <Link to="/app">
+                <Button type="primary">You can go back home</Button>
+              </Link>
+            </StytledButton>
+          </>
+        ) : (
+          <SuccessfulDepositTransaction>
+            <img src="/main/successTransaction.png" />
 
-          <p>
-            {fullName ? `${fullName?.split(" ")?.[0]?.toUpperCase()},  we` : 'We'} have received your
-            deposit transaction and have credited your account.
-          </p>
+            <p>
+              {fullName
+                ? `${fullName?.split(" ")?.[0]?.toUpperCase()},  we`
+                : "We"}{" "}
+              have received your deposit transaction and have credited your
+              account.
+            </p>
 
-          <StytledButton>
-            <Link to="/app">
-              <Button type="primary">go home</Button>
-            </Link>
-          </StytledButton>
-        </SuccessfulDepositTransaction>
-      )}
-    </StytledDepositSuccess>
+            <StytledButton>
+              <Link to="/app">
+                <Button type="primary">go home</Button>
+              </Link>
+            </StytledButton>
+          </SuccessfulDepositTransaction>
+        )}
+      </StytledDepositSuccess>
+    </>
   );
 }
 
