@@ -152,17 +152,10 @@ function MainBankEditPage({
   const currentBankFiltered = allBanks?.find((each) => each?.name === bankName);
 
   const disableButton =
-    (!bankName && !currentBankFiltered?.name) ||
-    accountNumber === bankAccount ||
-    !accountNumber ||
-    accountNumber?.length !== 10;
+    !bankSelected?.name || !accountNumber || accountNumber?.length !== 10;
 
   function handleUpdateBank() {
-    if (
-      (!currentBankFiltered?.name && !bankName) ||
-      !accountNumber ||
-      accountNumber?.length !== 10
-    ) {
+    if (!bankSelected?.name || !accountNumber || accountNumber?.length !== 10) {
       toast.error("Please select or fill current bank name and account");
       return;
     }
