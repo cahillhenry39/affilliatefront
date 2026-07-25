@@ -14,8 +14,8 @@ const StyledDispayOther = styled.section`
   gap: 3rem;
   height: 100vh;
 
-  background: linear-gradient(#000000cf, #000000c3),
-    url("/main/hero-image.jpeg");
+  background:
+    linear-gradient(#000000cf, #000000c3), url("/main/hero-image.jpeg");
 
   & h2 {
     color: #ffff;
@@ -32,8 +32,6 @@ const StyledDispayMobile = styled.section`
 
   @media ${device.mobileL} {
     display: block;
-
-    background-color: red;
   }
 `;
 

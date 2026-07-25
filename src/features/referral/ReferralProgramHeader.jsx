@@ -38,7 +38,6 @@ const StyledContainer = styled.div`
   gap: 2rem;
   position: relative;
 
-  /* background: var(--color-green-backColor); */
   background: #0bb7832b;
 `;
 
