@@ -204,11 +204,11 @@ function MyActiveTask({
 
           toast.success(
             `You have successfully claimed ${formatCurrency(
-              totalAmountNotClaimed
-            )}`
+              totalAmountNotClaimed,
+            )}`,
           );
         },
-      }
+      },
     );
   }
 
@@ -272,12 +272,14 @@ function MyActiveTask({
             <div>
               <h3>{each.taskName}</h3>
               <span>{`${each.totalDownload} ${
-                each.action === "download" ? "downloads" : "views"
+                each.action?.toLowerCase() === "download"
+                  ? "downloads"
+                  : "views"
               }`}</span>
               <span>{each.taskName}</span>
             </div>
 
-            {each.action === "rate" &&
+            {each.action?.toLowerCase() === "rate" &&
               (each.isPerformed ? (
                 <RateAndEarnContainer>
                   <button disabled={true}>completed</button>
@@ -347,7 +349,7 @@ function MyActiveTask({
         <ClaimRewardActionButton
           totalDone={
             todaysTasks?.filter(
-              (each) => each?.isPerformed && each?.isCompleted
+              (each) => each?.isPerformed && each?.isCompleted,
             )?.length
           }
           totalAmountNotClaimed={totalAmountNotClaimed}

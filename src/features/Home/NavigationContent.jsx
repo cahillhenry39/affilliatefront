@@ -184,6 +184,12 @@ function NavigationContent({ showMini, setShowMini }) {
                   About Us{" "}
                 </StyledNavLink>
               </li>
+
+              <li>
+                <StyledNavLink to={"/referral/program"} onClick={handleClose}>
+                  Referral Program{" "}
+                </StyledNavLink>
+              </li>
             </ParaContentUl>
 
             {isAuthenticated ? (

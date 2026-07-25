@@ -42,8 +42,6 @@ function ProtectedRoute({ children }) {
     [isAuthenticated, isLoading, navigate],
   );
 
-  console.log(isAuthenticated, isLoading, data);
-
   if (isLoading)
     return (
       <FullPage>

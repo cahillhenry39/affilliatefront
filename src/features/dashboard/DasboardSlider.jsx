@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const StyledDisplayOther = styled.section`
   /* ✅ use CSS variable */
@@ -73,9 +74,31 @@ const DotButtons = styled.button`
 `;
 
 function DasboardSlider() {
+  const navigate = useNavigate();
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const successStories = ["slider1.jpg", "slider2.jpg", "slider3.jpg"];
+  // const successStoriess = [
+  //   "slider1.png",
+  //   "slider2.png",
+  //   // "slider3.jpg",
+  //   "slider4.jpg",
+  // ];
+
+  const successStories = [
+    {
+      link: "/app/settings?page=personal",
+      image: "slider1.png",
+    },
+    {
+      link: "/app/referral/program",
+      image: "slider2.png",
+    },
+
+    {
+      link: "",
+      image: "slider3.jpg",
+    },
+  ];
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -92,9 +115,12 @@ function DasboardSlider() {
             <MainSliderContainerSecond $currentIndex={currentIndex}>
               {successStories?.map((each, i) => {
                 return (
-                  <MainSliderContainerThird key={i}>
+                  <MainSliderContainerThird
+                    key={i}
+                    onClick={() => navigate(each?.link)}
+                  >
                     <ImageDiv>
-                      <img src={`/main/${each}`} />
+                      <img src={`/main/${each?.image}`} />
                     </ImageDiv>
                   </MainSliderContainerThird>
                 );

@@ -10,12 +10,36 @@ import {
   isYesterday,
   isSameWeek,
   isSameMonth,
+  startOfWeek,
+  endOfWeek,
+  format,
+  addWeeks,
 } from "date-fns";
 import { differenceInDays } from "date-fns/esm";
 
 // We want to make this function work for both Date objects and strings (which come from Supabase)
 export const subtractDates = (dateStr1, dateStr2) =>
   differenceInDays(parseISO(String(dateStr1)), parseISO(String(dateStr2)));
+
+export function getCurrentWeekRange(weekDifferent = 0) {
+  const currentDate = addDays(new Date(), weekDifferent * 7);
+  const today = currentDate;
+
+  const startDate = startOfWeek(today, {
+    weekStartsOn: 0,
+  });
+
+  const endDate = endOfWeek(today, {
+    weekStartsOn: 0,
+  });
+
+  return {
+    startDate,
+    endDate,
+    startDateFormatted: format(startDate, "yyyy-MM-dd"),
+    endDateFormatted: format(endDate, "yyyy-MM-dd"),
+  };
+}
 
 export const formatDistanceFromNow = (dateStr) =>
   formatDistance(parseISO(dateStr), new Date(), {
@@ -118,7 +142,7 @@ export function formatDateOnly(dateStr) {
 // https://uibakery.io/regex-library/phone-number
 export const isValidPhone = (str) =>
   /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/.test(
-    str
+    str,
   );
 
 export const isValidPhonePlain = (str) => /^\d{11}$/.test(str);
@@ -168,10 +192,10 @@ export const formatDate = () => {
     day === "1" || (day.endsWith("1") && day !== "11")
       ? day + "st"
       : day === "2" || (day.endsWith("2") && day !== "12")
-      ? day + "nd"
-      : day === "3" || (day.endsWith("3") && day !== "13")
-      ? day + "rd"
-      : day + "th";
+        ? day + "nd"
+        : day === "3" || (day.endsWith("3") && day !== "13")
+          ? day + "rd"
+          : day + "th";
 
   return { year, month, day, weekDays, time, hours, mins };
 };
@@ -235,7 +259,7 @@ export function sortArrayAsc(array) {
 export function arrayRange(start, stop, step) {
   return Array.from(
     { length: (stop - start) / step + 1 },
-    (value, index) => start + index * step
+    (value, index) => start + index * step,
   );
 }
 
@@ -256,7 +280,7 @@ export function getTotalAmountHelper(array) {
         (Number(next.amount) +
           Number(next.profitPerDay) *
             Math.abs(differenceInDays(new Date(next.created_at), new Date()))),
-      0
+      0,
     );
 
   return total;
@@ -270,10 +294,10 @@ export function getTotalOnDuration(array, type, duration) {
         (duration === "today"
           ? isToday(new Date(data.created_at))
           : duration === "yesterday"
-          ? isYesterday(new Date(data.created_at))
-          : duration === "week"
-          ? isSameWeek(new Date(data.created_at), new Date())
-          : isSameMonth(new Date(data.created_at), new Date()))
+            ? isYesterday(new Date(data.created_at))
+            : duration === "week"
+              ? isSameWeek(new Date(data.created_at), new Date())
+              : isSameMonth(new Date(data.created_at), new Date())),
     )
     ?.reduce((init, next) => init + Number(next.amount), 0);
 
@@ -300,12 +324,12 @@ export function getReferralsOnDuration(array, duration) {
       duration === "today"
         ? isToday(new Date(data.created_at))
         : duration === "yesterday"
-        ? isYesterday(new Date(data.created_at))
-        : duration === "week"
-        ? isSameWeek(new Date(data.created_at), new Date())
-        : duration === "all"
-        ? true
-        : isSameMonth(new Date(data.created_at), new Date())
+          ? isYesterday(new Date(data.created_at))
+          : duration === "week"
+            ? isSameWeek(new Date(data.created_at), new Date())
+            : duration === "all"
+              ? true
+              : isSameMonth(new Date(data.created_at), new Date()),
     )
     ?.reduce((init, next) => init + Number(next?.amountPaidToReferral), 0);
 
@@ -346,7 +370,7 @@ export function formatTextCapitalize(text) {
       (el) =>
         el &&
         el?.split("")[0]?.toUpperCase() +
-          el?.split("")?.slice(1, el?.split("")?.length).join("")
+          el?.split("")?.slice(1, el?.split("")?.length).join(""),
     )
     ?.join(" ");
 
@@ -361,7 +385,7 @@ export function formatTextCapitalizeFirstLetter(text) {
       (el) =>
         el &&
         el?.trim()?.split("")[0]?.toUpperCase() +
-          el?.trim()?.split("")?.slice(1, el?.split("")?.length).join("")
+          el?.trim()?.split("")?.slice(1, el?.split("")?.length).join(""),
     )
     ?.join(". ");
 

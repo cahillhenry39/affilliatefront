@@ -6,7 +6,8 @@ import {
   getAllMyReferrals,
   getMyReferralDetails,
   updateAReferral,
-  getAReferralWithPubId
+  getAReferralWithPubId,
+  handleFetchReferralLeaderboard,
 } from "../../services/apiReferral";
 
 export function useGetAReferralWithEmail() {
@@ -25,8 +26,7 @@ export function useGetAReferralWithPubId(id) {
   const { data: validateAReferral, isLoading } = useQuery({
     queryFn: () => getAReferralWithPubId(id),
 
-       queryKey: ["my_referral_details_", id],
-
+    queryKey: ["my_referral_details_", id],
   });
 
   return { validateAReferral, isLoading };
@@ -82,4 +82,23 @@ export function useUpdateReferral() {
   });
 
   return { updateReferral, isPending };
+}
+
+export function useGetReferralLeaderboard() {
+  const { data, isLoading } = useQuery({
+    queryFn: () => handleFetchReferralLeaderboard(),
+
+    queryKey: ["all_Leaderboard_information"],
+  });
+
+  return {
+    competition: data?.competition,
+    packages: data?.packages,
+    pastRewards: data?.pastRewards,
+    currentWeekLeaders: data?.currentWeekLeaders,
+    lastWeekLeaders: data?.lastWeekLeaders,
+    rewardsCatalog: data?.rewardsCatalog,
+
+    isLoading,
+  };
 }

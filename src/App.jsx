@@ -47,6 +47,7 @@ import HowItWorks from "./pages/public/HowItWorks";
 import RecentActivites from "./pages/public/RecentActivites";
 import FAQ from "./pages/public/FAQ";
 import AboutUsPublic from "./pages/public/AboutUsPublic";
+import ReferralProgramPage from "./pages/app/ReferralProgramPage";
 // import HomeCopy from "./pages/public/Homecopy";
 
 const queryClient = new QueryClient({
@@ -111,6 +112,11 @@ function App() {
                   element={<ResetPasswordForm />}
                 />
 
+                <Route
+                  path="/referral/program"
+                  element={<ReferralProgramPage />}
+                />
+
                 <Route path="*" element={<PageNotFound />} />
               </Route>
 
@@ -173,6 +179,11 @@ function App() {
                 <Route path="customer_care" element={<CustomerCare />} />
                 <Route path="about_us" element={<AboutUs />} />
                 <Route path="referral" element={<ReferralPage />} />
+
+                <Route
+                  path="referral/program"
+                  element={<ReferralProgramPage />}
+                />
 
                 <Route path="rewards" element={<StyledRewardSpinner />} />
                 <Route path="*" element={<PageNotFound />} />

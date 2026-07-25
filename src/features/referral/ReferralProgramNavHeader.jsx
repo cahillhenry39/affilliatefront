@@ -2,6 +2,13 @@ import { HiOutlineChevronLeft } from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
 import styled, { css } from "styled-components";
 
+const Overlay = styled.div`
+  z-index: 1000;
+  position: fixed;
+  width: 100%;
+  background-color: #191919;
+`;
+
 const NavigationTopBar = styled.div`
   display: flex;
   justify-content: space-between;
@@ -10,9 +17,9 @@ const NavigationTopBar = styled.div`
   font-size: 1.3rem;
   padding: 0rem 1rem;
   padding: 1rem 1rem;
-  z-index: 1000;
+  /* z-index: 1000;
   position: fixed;
-  width: 100%;
+  width: 100%; */
 
   ${(props) =>
     props?.$isDarkMode === "true"
@@ -26,8 +33,8 @@ const NavigationTopBar = styled.div`
 
 const RulesSpan = styled.span`
   font-size: 1.2rem;
-  color: var(--color-grey-500);
-  background-color: var(--color-grey-0);
+  color: #999999;
+  background-color: #000;
   padding: 0.21rem 1rem;
   width: fit-content;
   border-radius: 9px;
@@ -38,17 +45,20 @@ const RulesSpan = styled.span`
 const IconeNavSVG = styled(HiOutlineChevronLeft)`
   width: 2rem;
   height: 2rem;
+  color: #999999;
 `;
 
-function ReferralNavHeader({ setShowRules = () => {}, isDarkMode }) {
+function ReferralProgramNavHeader({ isDarkMode }) {
   const navigate = useNavigate();
 
   return (
-    <NavigationTopBar $isDarkMode={isDarkMode?.toString()}>
-      <IconeNavSVG onClick={() => navigate(-1)} />
-      <RulesSpan onClick={() => setShowRules(true)}>Rules</RulesSpan>
-    </NavigationTopBar>
+    <Overlay>
+      <NavigationTopBar $isDarkMode={isDarkMode?.toString()}>
+        <IconeNavSVG onClick={() => navigate(-1)} />
+        <RulesSpan>Rules</RulesSpan>
+      </NavigationTopBar>
+    </Overlay>
   );
 }
 
-export default ReferralNavHeader;
+export default ReferralProgramNavHeader;

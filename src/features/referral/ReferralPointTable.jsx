@@ -1,5 +1,10 @@
 import styled, { css } from "styled-components";
-import { formatDateOnly, getCurrentWeekRange } from "../../utils/helpers";
+import {
+  formatCurrency,
+  formatDateOnly,
+  formatTextCapitalize,
+  getCurrentWeekRange,
+} from "../../utils/helpers";
 
 const LeaderBoardDiv = styled.div`
   display: flex;
@@ -76,7 +81,7 @@ const WeeklyLeadingBoard = styled.div`
 
   & div {
     display: grid;
-    grid-template-columns: 0.3fr 1fr 0.41fr;
+    grid-template-columns: 0.4fr 1fr 0.41fr;
     gap: 1rem;
     background-color: var(--color-brand-700);
     color: var(--color-brand-100);
@@ -95,7 +100,7 @@ const WeeklyLeadingBoard = styled.div`
 
     & li {
       display: grid;
-      grid-template-columns: 0.3fr 1fr 0.41fr;
+      grid-template-columns: 0.4fr 1fr 0.41fr;
       gap: 1rem;
       padding: 0.7rem 1rem;
       align-items: end;
@@ -119,55 +124,67 @@ const WeeklyLeadingBoard = styled.div`
 
 const currentWeekLeaderboard = [
   {
-    userEmal: "emili****@gmail.com",
-    points: 240,
+    package: "Level 5",
+    cost: 1050000,
+    points: 140,
+  },
+
+  {
+    package: "Level 4",
+    cost: 380000,
+    points: 60,
+  },
+
+  {
+    package: "Level 3",
+    cost: 200000,
+    points: 30,
+  },
+
+  {
+    package: "Level 2",
+    cost: 65000,
+    points: 9,
+  },
+
+  {
+    package: "Level 1",
+    cost: 18000,
+    points: 2,
   },
 ];
 
-function ReferralLeaderBoard({
-  isDarkMode,
-  type = "current",
-  leaderBoardData = [],
-}) {
-  const { startDate, endDate } = getCurrentWeekRange(
-    type === "current" ? 0 : -1,
-  );
+function ReferralPointTable({ isDarkMode, packages }) {
+  const { startDate, endDate } = getCurrentWeekRange();
 
   return (
     <LeaderBoardDiv>
       <WeeklyLeaderBoardDiv>
         <div>
-          {type === "current" ? (
-            <Headings>{`This week leaderboard `}</Headings>
-          ) : (
-            <Headings>{`Last week leaderboard `}</Headings>
-          )}
-
-          <SubHeadings>
-            ({`${formatDateOnly(startDate)} - ${formatDateOnly(endDate)}`})
-          </SubHeadings>
+          <Headings>{`Subscription Table Points`}</Headings>
         </div>
         <WeeklyLeadingBoard>
           <div>
-            <p>S/n</p>
-            <p>Email</p>
-            <p>{type === "current" ? "Points" : "Winnings"}</p>
+            <p>Package</p>
+            <p>Cost</p>
+            <p>Points</p>
           </div>
           <ul>
-            {leaderBoardData?.map((each, i) => {
+            {packages?.map((each, i) => {
               return (
                 <li key={i}>
-                  <p>{i + 1}</p>
-                  <p>{each?.referredByEmail?.trim()}</p>
-
-                  {!each?.totalPoints || each?.totalPoints === 0 ? (
-                    <p>{`-----`}</p>
-                  ) : (
-                    <p>{`${each?.totalPoints} points`}</p>
-                  )}
+                  <p>{formatTextCapitalize(each?.title)}</p>
+                  <p>{formatCurrency(each?.cost)}</p>
+                  <p>{`${each?.points} Points`}</p>
                 </li>
               );
             })}
+
+            {/* <li key={i}>
+                  <p>{formatTextCapitalize(each?.package)}</p>
+                  <p>{formatCurrency(each?.cost)}</p>
+                  <p>{`${each?.points} Points`}</p>
+                </li> */}
           </ul>
         </WeeklyLeadingBoard>
       </WeeklyLeaderBoardDiv>
@@ -175,4 +192,4 @@ function ReferralLeaderBoard({
   );
 }
 
-export default ReferralLeaderBoard;
+export default ReferralPointTable;
