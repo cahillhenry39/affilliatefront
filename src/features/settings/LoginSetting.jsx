@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import styled from "styled-components";
 import useUser from "../authentication/useUser";
 
@@ -55,7 +54,7 @@ const StyledButtonContainer = styled.div`
   }
 `;
 
-function LoginSetting({ handleUpdateSettings, isWorking }) {
+function LoginSetting({ handleUpdateSettings, isWorking, showAlert }) {
   const { register, watch, handleSubmit } = useForm();
   const { email } = useUser();
 
@@ -63,12 +62,19 @@ function LoginSetting({ handleUpdateSettings, isWorking }) {
     const { password, confirmNewPassword, newPassword } = data;
 
     if (!newPassword || !confirmNewPassword || !password) {
-      toast.error("All fields are required");
+      showAlert({
+        status: "error",
+        text: "All fields are required",
+      });
       return;
     }
 
     if (newPassword !== confirmNewPassword) {
-      toast.error("New Password must match the confirm password");
+      showAlert({
+        status: "error",
+        text: "New Password must match the confirm password",
+      });
+
       return;
     }
 

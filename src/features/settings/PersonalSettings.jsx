@@ -4,7 +4,6 @@ import { IoIosRadioButtonOff, IoIosRadioButtonOn } from "react-icons/io";
 import styled from "styled-components";
 import useUser from "../authentication/useUser";
 import { formatTextCapitalize } from "../../utils/helpers";
-import toast from "react-hot-toast";
 import { countries, nigerianStates } from "../../utils/ArrayHelper";
 
 const StyledContainer = styled.div`
@@ -120,7 +119,7 @@ const StyledButtonContainer = styled.div`
   }
 `;
 
-function PersonalSettings({ handleUpdateSettings, isWorking }) {
+function PersonalSettings({ handleUpdateSettings, isWorking, showAlert }) {
   const {
     phoneNum,
     email,
@@ -139,7 +138,7 @@ function PersonalSettings({ handleUpdateSettings, isWorking }) {
       phoneNum,
       email,
       fullName,
-      DOB,
+      DOB: DOB?.split("T")[0] || "",
       address,
       networkType,
       country,
@@ -150,7 +149,10 @@ function PersonalSettings({ handleUpdateSettings, isWorking }) {
 
   function handleSubmitData(data) {
     if (data?.phoneNum?.length !== 11) {
-      toast.error("Phone number is incorrect");
+      showAlert({
+        status: "error",
+        text: "Phone number is incorrect",
+      });
       return;
     }
 
@@ -163,7 +165,10 @@ function PersonalSettings({ handleUpdateSettings, isWorking }) {
       // console.log(newData);
       handleUpdateSettings(route, newData);
     } else {
-      toast.error("Invalid phone number");
+      showAlert({
+        status: "error",
+        text: "Invalid phone number",
+      });
     }
   }
 
@@ -173,7 +178,7 @@ function PersonalSettings({ handleUpdateSettings, isWorking }) {
 
   const disabled =
     (watch("phoneNum") === phoneNum &&
-      watch("DOB") === DOB &&
+      watch("DOB") === (DOB ? DOB.split("T")[0] : "") &&
       watch("address") === address &&
       watch("country") === country &&
       watch("city") === city &&
@@ -292,7 +297,6 @@ function PersonalSettings({ handleUpdateSettings, isWorking }) {
           <LabelContent>Date of Birth</LabelContent>
           <input
             placeholder="Select date of birth"
-            defaultValue={DOB ? new Date(DOB).toISOString().slice(0, 10) : ""}
             type="date"
             {...register("DOB")}
           />

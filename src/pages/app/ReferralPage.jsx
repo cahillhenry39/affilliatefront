@@ -9,7 +9,6 @@ import { useGetMyReferralDetails } from "../../features/referral/useReferral";
 import SocialMediaShare from "../../ui/SocialMediaShare";
 import { useDarkMode } from "../../context/DarkModeContext";
 import TaskLoader from "../../features/task/TaskLoader";
-import ReferralLeaderBoard from "../../features/referral/ReferralLeaderBoard";
 
 const StyledContainerOnly = styled.div``;
 

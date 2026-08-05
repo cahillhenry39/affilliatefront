@@ -5,7 +5,6 @@ import { useUpdateSettings } from "../authentication/useUser";
 import LoginSetting from "./LoginSetting";
 import PersonalSettings from "./PersonalSettings";
 import TransactionSettings from "./TransactionSettings";
-import toast from "react-hot-toast";
 import StockSettings from "./StockSettings";
 import WithdrawalSettings from "./WithdrawalSettings";
 import HomeSettings from "./HomeSettings";
@@ -13,10 +12,12 @@ import ThemeSettings from "./ThemeSettings";
 import SubscriptionSettings from "./SubscriptionSettings";
 import FeedbackSettings from "./FeedbackSettings";
 import AboutUsPage from "./AboutUsPage";
+import { useAlert } from "../../hooks/AlertContext";
 
 function MainSettingsLayout({ showPage, handleReturnMainPage }) {
   const { updateSettings, isPending } = useUpdateSettings();
   const queryClient = useQueryClient();
+  const { showAlert } = useAlert();
 
   function handleUpdateSettings(route, newData) {
     const updateData = {
@@ -27,7 +28,20 @@ function MainSettingsLayout({ showPage, handleReturnMainPage }) {
     updateSettings(updateData, {
       onSuccess: () => {
         queryClient.invalidateQueries();
-        toast.success("Your update was successful.");
+
+        showAlert({
+          status: "success",
+          text: "Your update was successful.",
+          link: "/app/dashboard",
+          buttonMessage: "Go to Dashboard",
+        });
+      },
+
+      onError: (err) => {
+        showAlert({
+          status: "error",
+          text: err?.message,
+        });
       },
     });
   }
@@ -44,6 +58,7 @@ function MainSettingsLayout({ showPage, handleReturnMainPage }) {
         <PersonalSettings
           handleUpdateSettings={handleUpdateSettings}
           isWorking={isPending}
+          showAlert={showAlert}
         />
       ) : (
         ""

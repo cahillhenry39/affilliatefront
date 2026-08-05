@@ -4,6 +4,7 @@ import { formatCurrency } from "../../utils/helpers";
 import { useUpdateActiveSpinners } from "../../services/useSpinnerReward";
 import { useQueryClient } from "@tanstack/react-query";
 import { getConfetti } from "../../utils/confetti";
+import { useAlert } from "../../hooks/AlertContext";
 
 // Animations
 const pulseGlow = keyframes`
@@ -247,6 +248,8 @@ export default function Spinner({ benefits, currentSpinner }) {
   const [rotation, setRotation] = useState(0);
   const queryClient = useQueryClient();
 
+  const { showAlert } = useAlert();
+
   const { updateSpinner, isPending } = useUpdateActiveSpinners();
 
   const values = benefits;
@@ -305,6 +308,11 @@ export default function Spinner({ benefits, currentSpinner }) {
             setWinner(null);
             setIsSpinning(false);
           }, 4000);
+
+          showAlert({
+            status: "error",
+            text: "Something went wrong. Try again",
+          });
         },
         onSuccess: () => {
           queryClient.invalidateQueries();
@@ -321,8 +329,16 @@ export default function Spinner({ benefits, currentSpinner }) {
             setWinner(null);
             setIsSpinning(false);
           }, 10000);
+
+          showAlert({
+            status: "success",
+            text: `You have been credited with ${formatCurrency(selectedReward.value)}`,
+            link: "/app/dashboard",
+            buttonMessage: "Go to Dashboard",
+            title: "🎉 YOU WON! 🎉",
+          });
         },
-      }
+      },
     );
   };
 

@@ -4,10 +4,11 @@ import WithdrawalHeaderAccount from "../../features/withdrawal/WithdrawalHeaderA
 import HeaderNavigationBack from "../../ui/HeaderNavigationBack";
 import WithdrawalButtons from "../../features/withdrawal/WithdrawalButtons";
 import { useState } from "react";
-import toast from "react-hot-toast";
 import { useMakeWithdrawals } from "../../features/transaction/useTransaction";
 import { useQueryClient } from "@tanstack/react-query";
 import WithdrawalTips from "../../features/withdrawal/WithdrawalTips";
+import { useAlert } from "../../hooks/AlertContext";
+import { formatCurrency } from "../../utils/helpers";
 
 const StyledContainer = styled.div`
   overflow: hidden;
@@ -27,28 +28,52 @@ const StyledContainer = styled.div`
 
 function Withdrawal() {
   const [showTips, setShowTips] = useState(false);
+  const { showAlert } = useAlert();
 
   const [amount, setAmount] = useState("");
   const queryClient = useQueryClient();
-  const { personalData, balance, bankAccount, bankName, currentPercentage } =
+  const { fullName, balance, bankAccount, bankName, currentPercentage } =
     useUser();
 
   const { makeWithdrawal, isWithdrawing } = useMakeWithdrawals();
   const isWorking = isWithdrawing;
 
+  const disableWithdrawalButton =
+    !amount ||
+    currentPercentage < 100 ||
+    !bankName ||
+    !bankAccount ||
+    !fullName;
+
   function handleMakeWithdrawal() {
+    if (disableWithdrawalButton) {
+      showAlert({
+        status: "error",
+        text: "Provide amount or make sure your bank information is correct",
+      });
+
+      return;
+    }
+
     const formatedAount = parseInt(
       amount?.replace(/,/g, "")?.split(".")[0],
-      10
+      10,
     );
 
     if (+balance < +formatedAount) {
-      toast.error("Oops... Insufficient balance.");
+      showAlert({
+        status: "error",
+        text: "Oops... Insufficient balance.",
+      });
+
       return;
     }
 
     if (currentPercentage < 100) {
-      toast.error("Oops... you are ineligible to make withdrawal.");
+      showAlert({
+        status: "error",
+        text: "Oops... you are ineligible to make withdrawal.",
+      });
       return;
     }
 
@@ -59,7 +84,20 @@ function Withdrawal() {
     makeWithdrawal(newData, {
       onSuccess: () => {
         queryClient.invalidateQueries();
-        toast.success("You have successfully place your withdrawal");
+
+        showAlert({
+          status: "success",
+          text: `Congrats! You have successfully place a ${formatCurrency(formatedAount)} withdrawal. It will arrive within 1hr.`,
+          link: "/app/finance",
+          buttonMessage: "Check Status",
+        });
+      },
+
+      onError: (err) => {
+        showAlert({
+          status: "error",
+          text: err?.message,
+        });
       },
     });
   }
@@ -74,7 +112,7 @@ function Withdrawal() {
 
       <StyledContainer>
         <WithdrawalHeaderAccount
-          personalData={personalData}
+          fullName={fullName}
           bankAccount={bankAccount}
           bankName={bankName}
           balance={balance}
@@ -86,6 +124,7 @@ function Withdrawal() {
           isWorking={isWorking}
           onSubmitData={handleMakeWithdrawal}
           currentPercentage={currentPercentage}
+          disableWithdrawalButton={disableWithdrawalButton}
         />
       </StyledContainer>
 

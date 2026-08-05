@@ -77,10 +77,6 @@ export function useMoneyFromBalance() {
   const { mutate: moveMoneyFromBalance, isPending: isMovingMoney } =
     useMutation({
       mutationFn: handleMoveMoney,
-
-      onError: (err) => {
-        toast.error(err.message);
-      },
     });
 
   return { moveMoneyFromBalance, isMovingMoney };
@@ -89,10 +85,6 @@ export function useMoneyFromBalance() {
 export function useDepositWithToken() {
   const { mutate: tokenDposit, isPending: isTokenDeposit } = useMutation({
     mutationFn: handleDepositWithToken,
-
-    onError: (err) => {
-      toast.error(err.message);
-    },
   });
 
   return { tokenDposit, isTokenDeposit };
@@ -101,10 +93,6 @@ export function useDepositWithToken() {
 export function useMakeWithdrawals() {
   const { mutate: makeWithdrawal, isPending: isWithdrawing } = useMutation({
     mutationFn: handleMakeWithdrawal,
-
-    onError: (err) => {
-      toast.error(err.message);
-    },
   });
 
   return { makeWithdrawal, isWithdrawing };

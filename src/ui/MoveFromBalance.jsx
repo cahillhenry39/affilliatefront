@@ -5,7 +5,6 @@ import SpinnerAndText from "./SpinnerAndText";
 import { formatCurrency } from "../utils/helpers";
 import { ArrowLeftRight } from "lucide-react";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 const StyledFIrstSectionContainer = styled.div`
@@ -157,6 +156,8 @@ function MoveFromBalance({
   currentDepositType,
   balance = 0,
   expenseBal = 0,
+
+  showAlert,
 }) {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
@@ -165,7 +166,11 @@ function MoveFromBalance({
     const { amount } = data;
 
     if (!amount) {
-      toast.error("Please provide a valid amount");
+      showAlert({
+        status: "error",
+        text: "Please provide a valid amount",
+      });
+
       return;
     }
 
@@ -232,7 +237,7 @@ function MoveFromBalance({
 
       {moveMoneyMessage?.type === "success" ? (
         <SuccessMessage>{`You have successful moved ${formatCurrency(
-          moveMoneyMessage?.data?.amount
+          moveMoneyMessage?.data?.amount,
         )} to expense account.`}</SuccessMessage>
       ) : (
         ""

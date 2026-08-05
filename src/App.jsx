@@ -48,6 +48,7 @@ import RecentActivites from "./pages/public/RecentActivites";
 import FAQ from "./pages/public/FAQ";
 import AboutUsPublic from "./pages/public/AboutUsPublic";
 import ReferralProgramPage from "./pages/app/ReferralProgramPage";
+import { AlertProvider } from "./hooks/AlertContext";
 // import HomeCopy from "./pages/public/Homecopy";
 
 const queryClient = new QueryClient({
@@ -69,126 +70,134 @@ function App() {
 
         <BrowserRouter>
           <ScrollToTop>
-            <Routes>
-              <Route path="/" element={<PublicLayout />}>
-                <Route index path="/" element={<Home />} />
-                <Route index path="/how-it-works" element={<HowItWorks />} />
+            <AlertProvider>
+              <Routes>
+                <Route path="/" element={<PublicLayout />}>
+                  <Route index path="/" element={<Home />} />
+                  <Route index path="/how-it-works" element={<HowItWorks />} />
+
+                  <Route
+                    index
+                    path="/recent-activities"
+                    element={<RecentActivites />}
+                  />
+                  <Route
+                    index
+                    path="/testimonials"
+                    element={<RecentActivites />}
+                  />
+
+                  <Route index path="/faq" element={<FAQ />} />
+                  <Route index path="/demo" element={<Home />} />
+                  <Route index path="/about-us" element={<AboutUsPublic />} />
+                  {/* <Route index path="/" element={<HomeCopy />} /> */}
+                  <Route
+                    index
+                    path="/new_user/register"
+                    element={<GetRegistrationCode />}
+                  />
+                  <Route
+                    index
+                    path="/member/auth"
+                    element={<RegisterOrLogin />}
+                  />
+
+                  <Route
+                    index
+                    path="/forgot_password/auth"
+                    element={<ForgottenPassword />}
+                  />
+
+                  <Route
+                    index
+                    path="/reset_password/auth"
+                    element={<ResetPasswordForm />}
+                  />
+
+                  <Route
+                    path="/referral/program"
+                    element={<ReferralProgramPage />}
+                  />
+
+                  <Route path="*" element={<PageNotFound />} />
+                </Route>
 
                 <Route
-                  index
-                  path="/recent-activities"
-                  element={<RecentActivites />}
-                />
-                <Route
-                  index
-                  path="/testimonials"
-                  element={<RecentActivites />}
-                />
+                  path="app"
+                  element={
+                    <ProtectedRoute>
+                      <AppLayout />
+                    </ProtectedRoute>
+                  }
+                >
+                  <Route index element={<Navigate replace to="dashboard" />} />
+                  <Route path="dashboard" element={<Dashboard />} />
+                  <Route path="task" element={<Task />} />
+                  <Route path="task/today" element={<AllTask />} />
+                  <Route path="task/history" element={<TaskHistoryPage />} />
+                  <Route
+                    path="task/history/:taskId"
+                    element={<EachTaskPage />}
+                  />
+                  <Route path="stock" element={<Vault />} />
+                  <Route path="stock/:id/stock" element={<SingleVault />} />
 
-                <Route index path="/faq" element={<FAQ />} />
-                <Route index path="/demo" element={<Home />} />
-                <Route index path="/about-us" element={<AboutUsPublic />} />
-                {/* <Route index path="/" element={<HomeCopy />} /> */}
-                <Route
-                  index
-                  path="/new_user/register"
-                  element={<GetRegistrationCode />}
-                />
-                <Route
-                  index
-                  path="/member/auth"
-                  element={<RegisterOrLogin />}
-                />
+                  <Route
+                    path="stock/:stockId/stock/:id/view"
+                    element={<SingleViewStockPurchase />}
+                  />
+                  <Route path="withdraw" element={<Withdrawal />} />
 
-                <Route
-                  index
-                  path="/forgot_password/auth"
-                  element={<ForgottenPassword />}
-                />
+                  <Route path="finance" element={<Transactions />} />
 
-                <Route
-                  index
-                  path="/reset_password/auth"
-                  element={<ResetPasswordForm />}
-                />
+                  <Route
+                    path="finance/:transactionId"
+                    element={<SingleTransactionPage />}
+                  />
 
-                <Route
-                  path="/referral/program"
-                  element={<ReferralProgramPage />}
-                />
+                  <Route path="me" element={<CurrentUserPage />} />
 
-                <Route path="*" element={<PageNotFound />} />
-              </Route>
+                  <Route
+                    path="account/details"
+                    element={<AccountDetailsPage />}
+                  />
 
-              <Route
-                path="app"
-                element={
-                  <ProtectedRoute>
-                    <AppLayout />
-                  </ProtectedRoute>
-                }
-              >
-                <Route index element={<Navigate replace to="dashboard" />} />
-                <Route path="dashboard" element={<Dashboard />} />
-                <Route path="task" element={<Task />} />
-                <Route path="task/today" element={<AllTask />} />
-                <Route path="task/history" element={<TaskHistoryPage />} />
-                <Route path="task/history/:taskId" element={<EachTaskPage />} />
-                <Route path="stock" element={<Vault />} />
-                <Route path="stock/:id/stock" element={<SingleVault />} />
+                  <Route
+                    path="bank/details"
+                    element={<BankDetailsEditAddPage />}
+                  />
 
-                <Route
-                  path="stock/:stockId/stock/:id/view"
-                  element={<SingleViewStockPurchase />}
-                />
-                <Route path="withdraw" element={<Withdrawal />} />
+                  <Route path="settings" element={<SettingsPage />} />
 
-                <Route path="finance" element={<Transactions />} />
+                  <Route
+                    path="get_android_app"
+                    element={<AppSectionDownload />}
+                  />
 
-                <Route
-                  path="finance/:transactionId"
-                  element={<SingleTransactionPage />}
-                />
+                  <Route path="package_details" element={<PackageDetails />} />
+                  <Route path="all_deposit" element={<Deposit />} />
+                  <Route
+                    path="Deposit_card-type/:id"
+                    element={<DepositType />}
+                  />
+                  <Route
+                    path="deposit_successful/:id"
+                    element={<DepositSuccessful />}
+                  />
+                  <Route path="customer_care" element={<CustomerCare />} />
+                  <Route path="about_us" element={<AboutUs />} />
+                  <Route path="referral" element={<ReferralPage />} />
 
-                <Route path="me" element={<CurrentUserPage />} />
+                  <Route
+                    path="referral/program"
+                    element={<ReferralProgramPage />}
+                  />
 
-                <Route
-                  path="account/details"
-                  element={<AccountDetailsPage />}
-                />
-
-                <Route
-                  path="bank/details"
-                  element={<BankDetailsEditAddPage />}
-                />
-
-                <Route path="settings" element={<SettingsPage />} />
-
-                <Route
-                  path="get_android_app"
-                  element={<AppSectionDownload />}
-                />
-
-                <Route path="package_details" element={<PackageDetails />} />
-                <Route path="all_deposit" element={<Deposit />} />
-                <Route path="Deposit_card-type/:id" element={<DepositType />} />
-                <Route
-                  path="deposit_successful/:id"
-                  element={<DepositSuccessful />}
-                />
-                <Route path="customer_care" element={<CustomerCare />} />
-                <Route path="about_us" element={<AboutUs />} />
-                <Route path="referral" element={<ReferralPage />} />
-
-                <Route
-                  path="referral/program"
-                  element={<ReferralProgramPage />}
-                />
-
-                <Route path="rewards" element={<StyledRewardSpinner />} />
-                <Route path="*" element={<PageNotFound />} />
-              </Route>
-            </Routes>
+                  <Route path="rewards" element={<StyledRewardSpinner />} />
+                  <Route path="*" element={<PageNotFound />} />
+                </Route>
+              </Routes>
+            </AlertProvider>
           </ScrollToTop>
         </BrowserRouter>
 

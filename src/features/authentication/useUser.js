@@ -79,10 +79,6 @@ export function useForgottenPassword() {
 export function useUpdateSettings() {
   const { mutate: updateSettings, isPending } = useMutation({
     mutationFn: updateCurrentUserSettings,
-
-    onError: (error) => {
-      toast.error(error?.message);
-    },
   });
 
   return { updateSettings, isPending };
@@ -102,9 +98,6 @@ export function useGetLocation() {
 export function useSubscribePackage() {
   const { mutate: subscribePackage, isPending } = useMutation({
     mutationFn: handleSubscribePackage,
-    onError: (err) => {
-      toast.error(err.message);
-    },
   });
 
   return { subscribePackage, isPending };
@@ -113,9 +106,6 @@ export function useSubscribePackage() {
 export function useClaimReferralBonus() {
   const { mutate: claimReferralBonus, isPending } = useMutation({
     mutationFn: handleClaimReferral,
-    onError: (err) => {
-      toast.error(err.message);
-    },
   });
 
   return { claimReferralBonus, isPending };

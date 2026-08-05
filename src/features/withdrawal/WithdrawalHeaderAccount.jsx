@@ -55,15 +55,8 @@ const EachBankDetailsContainerContent = styled.div`
   }
 `;
 
-function WithdrawalHeaderAccount({
-  personalData,
-  bankAccount,
-  bankName,
-  balance,
-}) {
+function WithdrawalHeaderAccount({ fullName, bankAccount, bankName, balance }) {
   const navigate = useNavigate();
-
-  const { fullName } = personalData || {};
 
   return (
     <BankDetailsContainer>

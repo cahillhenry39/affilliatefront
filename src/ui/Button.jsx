@@ -1,216 +1,171 @@
 import styled, { css } from "styled-components";
 import { device } from "../../mediaQuery";
 
-const StyleBotton = styled.button`
-  text-transform: uppercase;
-  font-weight: 600;
+const variants = {
+  primary: css`
+    background: var(--color-brand-700);
+    color: var(--color-brand-50);
+
+    &:hover:not(:disabled) {
+      background: var(--color-brand-800);
+    }
+  `,
+
+  secondary: css`
+    background: var(--color-brand-100);
+    color: var(--color-brand-800);
+
+    &:hover:not(:disabled) {
+      background: var(--color-brand-200);
+    }
+  `,
+
+  reset: css`
+    background: var(--color-brand-100);
+    color: var(--color-brand-700);
+
+    &:hover:not(:disabled) {
+      background: var(--color-brand-200);
+    }
+  `,
+
+  cancel: css`
+    background: #ff4400a7;
+    color: var(--color-grey-800);
+
+    &:hover:not(:disabled) {
+      background: orangered;
+    }
+  `,
+
+  "adminBtn-cancel": css`
+    background: #ff4400a7;
+    color: var(--color-grey-100);
+
+    font-size: 1.1rem;
+    padding: 0.6rem 1rem;
+
+    &:hover:not(:disabled) {
+      background: orangered;
+    }
+  `,
+
+  "adminBtn-secondary": css`
+    background: var(--color-brand-100);
+    color: var(--color-brand-800);
+
+    font-size: 1.1rem;
+    padding: 0.6rem 1rem;
+
+    &:hover:not(:disabled) {
+      background: var(--color-brand-200);
+    }
+  `,
+
+  adminBtni: css`
+    background: var(--color-brand-700);
+
+    font-size: 1.2rem;
+    padding: 0.6rem 1rem;
+
+    &:hover:not(:disabled) {
+      background: var(--color-brand-800);
+    }
+  `,
+
+  icon: css`
+    background: var(--color-brand-800);
+
+    font-size: 1.2rem;
+    padding: 0.7rem 1.3rem;
+
+    &:hover:not(:disabled) {
+      background: var(--color-brand-900);
+    }
+  `,
+};
+
+const StyledButton = styled.button`
   border: none;
   border-radius: var(--border-radius-sm);
-  color: var(--color-brand-100);
 
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 1rem;
 
-  & svg {
+  cursor: pointer;
+  user-select: none;
+
+  transition:
+    background-color 0.2s,
+    color 0.2s,
+    transform 0.15s,
+    box-shadow 0.2s;
+
+  text-transform: uppercase;
+  font-weight: 600;
+
+  font-size: 1.4rem;
+  padding: 1rem 1.6rem;
+
+  &:active:not(:disabled) {
+    transform: scale(0.98);
+  }
+
+  &:focus-visible {
+    outline: 3px solid var(--color-brand-300);
+    outline-offset: 2px;
+  }
+
+  &:disabled {
+    background: #9ca3af !important;
+    color: #f3f4f6 !important;
+    cursor: not-allowed;
+  }
+
+  svg {
     width: 2rem;
     height: 2rem;
   }
 
-  ${(props) =>
-    props.type === "primary" &&
-    css`
-      background-color: var(--color-brand-700);
-      color: var(--color-brand-50);
+  ${({ $variant }) => variants[$variant]}
 
-      font-size: 1.4rem;
-      padding: 1rem 1.6rem;
-
-      &:hover {
-        background-color: var(--color-brand-800);
-      }
-
-      @media ${device.mobileL} {
-        font-size: 1.4rem;
-        padding: 1rem 1.2rem;
-
-        ${(props) =>
-          props.$change === "open" &&
-          css`
-            font-size: 1.6rem;
-          `}
-      }
-    `}
-
-  ${(props) =>
-    props.disabled &&
-    props.type === "primary" &&
-    css`
-      background-color: var(--color-brand-500) !important;
-      color: var(--color-brand-50) !important;
-    `}
-
-  ${(props) =>
-    props.type === "secondary" &&
-    css`
-      background-color: var(--color-brand-100);
-      color: var(--color-brand-800);
-      font-size: 1.4rem;
-      padding: 1rem 1.6rem;
-
-      &:hover {
-        background-color: var(--color-brand-200);
-        color: var(--color-brand-900);
-      }
-
-      @media ${device.mobileL} {
-        font-size: 1.4rem;
-        padding: 1rem 1.2rem;
-
-        ${(props) =>
-          props.$change === "open" &&
-          css`
-            font-size: 1.8rem;
-          `}
-      }
-    `}
-
-  ${(props) =>
-    props.type === "reset" &&
-    css`
-      background-color: var(--color-brand-100);
-      color: var(--color-brand-700);
-      font-size: 1.4rem;
-      padding: 1rem 1.6rem;
-
-      &:hover {
-        background-color: var(--color-brand-200);
-        color: var(--color-brand-800);
-      }
-
-      @media ${device.mobileL} {
-        font-size: 1.3rem;
-        padding: 0.4rem 0.6rem;
-      }
-    `}
-
-      ${(props) =>
-    props.type === "cancel" &&
-    css`
-      background-color: #ff4400a7;
-      color: var(--color-grey-800);
-
-      font-size: 1.4rem;
-      padding: 1rem 1.6rem;
-
-      &:hover {
-        background-color: orangered;
-        color: var(--color-grey-600);
-      }
-
-      @media ${device.mobileL} {
-        font-size: 1.3rem;
-        padding: 0.5rem 0.6rem;
-      }
-    `}
-
-     ${(props) =>
-    props.type === "adminBtn-cancel" &&
-    css`
-      background-color: #ff4400a7;
-      color: var(--color-grey-100);
-
-      font-size: 1.1rem;
-      padding: 0.6rem 1rem;
-
-      &:hover {
-        background-color: orangered;
-        color: var(--color-grey-200);
-      }
-
-      @media ${device.mobileL} {
-        font-size: 1.3rem;
-        padding: 0.5rem 0.6rem;
-      }
-    `}
-    
-
-     ${(props) =>
-    props.type === "adminBtn-secondary" &&
-    css`
-      background-color: var(--color-brand-100);
-      color: var(--color-brand-800);
-      font-size: 1.1rem;
-      padding: 0.6rem 1rem;
-
-      &:hover {
-        background-color: var(--color-brand-200);
-        color: var(--color-brand-900);
-      }
-
-      @media ${device.mobileL} {
-        font-size: 1.2rem;
-        padding: 0.5rem 0.6rem;
-      }
-    `}
-
-     ${(props) =>
-    props.type === "adminBtni" &&
-    css`
-      background-color: var(--color-brand-700);
-      font-size: 1.4rem;
-      padding: 0.6rem 1rem;
-
-      &:hover {
-        background-color: var(--color-brand-800);
-        color: var(--color-brand-200);
-      }
-
-      @media ${device.mobileL} {
-        font-size: 1.2rem;
-        padding: 0.5rem 0.6rem;
-      }
-    `}
-
-    
-  ${(props) =>
-    props.type === "icon" &&
-    css`
-      background-color: var(--color-brand-800);
-      font-size: 1.2rem;
-      padding: 0.7rem 1.3rem;
-
-      &:hover {
-        background-color: var(--color-brand-900);
-        color: var(--color-brand-200);
-      }
-
-      /* @media ${device.mobileL} {
-        font-size: 1.3rem;
-        padding: 0.5rem 0.6rem;
-      } */
-    `}
-
-      ${(props) =>
-    props.disabled &&
-    css`
-      background-color: #9ca3af;
-      color: #f3f4f6;
-    `}
+  @media ${device.mobileL} {
+    font-size: ${({ $change }) => ($change === "open" ? "1.6rem" : "1.3rem")};
+    padding: 0.8rem 1.2rem;
+  }
 `;
 
-function Button({ children, type, disabled, onClick, change, isWorking }) {
+function Button({
+  children,
+  type = "button",
+  variant,
+  disabled,
+  onClick,
+  change,
+  isWorking,
+  ...props
+}) {
+  // Backward compatibility
+  const styleVariant = variant || type;
+
+  const htmlType =
+    type === "submit" || type === "reset" || type === "button"
+      ? type
+      : "button";
+
   return (
-    <StyleBotton
+    <StyledButton
+      type={htmlType}
+      $variant={styleVariant}
       $change={change}
-      type={type}
-      disabled={disabled}
-      $isWorking={isWorking}
+      disabled={disabled || isWorking}
       onClick={onClick}
+      {...props}
     >
       {children}
-    </StyleBotton>
+    </StyledButton>
   );
 }
 

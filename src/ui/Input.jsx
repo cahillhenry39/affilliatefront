@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { device } from "../../mediaQuery";
 
 const Input = styled.input`
-  border: 1px solid var(--color-grey-300);
+  border: 1px solid var(--color-grey-100);
   background-color: var(--color-grey-0);
   border-radius: var(--border-radius-sm);
 

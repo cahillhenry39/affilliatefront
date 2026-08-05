@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import styled from "styled-components";
 
 const StyledContainer = styled.div``;
@@ -54,19 +53,26 @@ const StyledButtonContainer = styled.div`
   }
 `;
 
-function TransactionSettings({ handleUpdateSettings, isWorking }) {
+function TransactionSettings({ handleUpdateSettings, isWorking, showAlert }) {
   const { register, watch, handleSubmit } = useForm();
 
   function handleSubmitData(data) {
     const { currentPin, confirmNewPin, newPin } = data;
 
     if (!newPin || !confirmNewPin || !currentPin) {
-      toast.error("All fields are required");
+      showAlert({
+        status: "error",
+        text: "All fields are required",
+      });
       return;
     }
 
     if (newPin !== confirmNewPin) {
-      toast.error("New transaction pin must match the confirm pin");
+      showAlert({
+        status: "error",
+        text: "New transaction pin must match the confirm pin",
+      });
+
       return;
     }
 

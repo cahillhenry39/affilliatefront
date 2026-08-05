@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { formatCurrency, formatTextCapitalize } from "../../utils/helpers";
 import { useClaimReferralBonus } from "../authentication/useUser";
 import { useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
+import { useAlert } from "../../hooks/AlertContext";
 
 const StyledContainer = styled.div`
   display: flex;
@@ -120,6 +120,8 @@ function MyReferrals({
   totalClaimed = 0,
   totalNotClaimed = 0,
 }) {
+  const { showAlert } = useAlert();
+
   const { claimReferralBonus, isPending } = useClaimReferralBonus();
   const queryClient = useQueryClient();
   const isWorking = isPending;
@@ -129,11 +131,22 @@ function MyReferrals({
       referralId,
     };
 
-
     claimReferralBonus(newData, {
       onSuccess: () => {
         queryClient.invalidateQueries();
-        toast.success(`You have claimed ${formatCurrency(referralCost)}`);
+        showAlert({
+          status: "success",
+          text: `You have claimed ${formatCurrency(referralCost)}`,
+          link: "/app/dashboard",
+          buttonMessage: "Go to Dashboard",
+        });
+      },
+
+      onError: (err) => {
+        showAlert({
+          status: "error",
+          text: err?.message,
+        });
       },
     });
   }

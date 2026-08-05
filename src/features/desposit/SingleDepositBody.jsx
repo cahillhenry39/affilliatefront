@@ -6,6 +6,9 @@ import {
   formatDate2,
   formatTextCapitalize,
 } from "../../utils/helpers";
+import Button from "../../ui/Button";
+import { ArrowLeftIcon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const StyledFirstContainer = styled.div`
   position: relative;
@@ -134,7 +137,16 @@ const EachSecondContainer = styled.div`
   }
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 3rem 3rem 0rem;
+`;
+
 function SingleDepositBody({ aTransactions }) {
+  const navigate = useNavigate();
+
   const { amount, status, created_at, message, type, reference, userFullName } =
     aTransactions;
 
@@ -243,6 +255,16 @@ function SingleDepositBody({ aTransactions }) {
           </div>
         </EachSecondContainer>
       </StyledSecondContainer>
+
+      <ButtonContainer>
+        <Button variant="primary" onClick={() => navigate(-1)}>
+          {" "}
+          <ArrowLeftIcon /> Transaction
+        </Button>
+        <Button variant="secondary" onClick={() => navigate("/app/dashboard")}>
+          Dashboard
+        </Button>
+      </ButtonContainer>
     </>
   );
 }

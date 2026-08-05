@@ -102,6 +102,8 @@ function WithdrawalButtons({
   onSubmitData,
   isWorking = false,
   currentPercentage,
+
+  disableWithdrawalButton = false,
 }) {
   const amountArray = [10000, 20000, 50000, 100000, 200000, 500000];
 
@@ -177,7 +179,7 @@ function WithdrawalButtons({
         <Button
           type={"primary"}
           onClick={onSubmitData}
-          disabled={currentPercentage < 100}
+          disabled={disableWithdrawalButton}
         >
           {currentPercentage < 100 ? (
             `Remaining ${100 - currentPercentage}% To Withdraw`

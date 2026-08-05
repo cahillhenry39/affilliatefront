@@ -6,11 +6,11 @@ import useUser, {
 import Spinner from "../../ui/Spinner";
 import BankAndAccountDetails from "../../features/accountDetails/BankAndAccountDetails";
 import EachPackagesDetails from "../../features/accountDetails/EachPackagesDetails";
-import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import SpecialPackageOffer from "../../features/accountDetails/SpecialPackageOffer";
 import { useGetCompanyDetails } from "../../services/useCompanyDetails";
+import { useAlert } from "../../hooks/AlertContext";
 
 const StyledContainer = styled.div`
   overflow: hidden;
@@ -42,6 +42,7 @@ function AccountDetailsPage() {
   } = useUser();
   const { subscribePackage, isPending } = useSubscribePackage();
   const { getCompanuDetails } = useGetCompanyDetails();
+  const { showAlert } = useAlert();
 
   const queryClient = useQueryClient();
 
@@ -54,7 +55,13 @@ function AccountDetailsPage() {
 
   function handleSubscribePackage(packageId, cost) {
     if (expenseBal < cost) {
-      toast.error("Low balance. Make a deposit to continue");
+      showAlert({
+        status: "error",
+        text: "Low balance. Make a deposit to continue",
+        link: "/app/all_deposit",
+        buttonMessage: "Go to Deposit",
+      });
+
       return;
     }
 
@@ -66,14 +73,34 @@ function AccountDetailsPage() {
     subscribePackage(data, {
       onSuccess: () => {
         queryClient.invalidateQueries();
-        toast.success("Package scubscription was successful");
+        showAlert({
+          status: "success",
+          text: "Package subscription was successful",
+          link: "/app/dashboard",
+          buttonMessage: "Go to Dashboard",
+        });
+      },
+
+      onError: (err) => {
+        showAlert({
+          status: "error",
+          text: err?.message,
+          link: "/app/all_deposit",
+          buttonMessage: "Go to Deposit",
+        });
       },
     });
   }
 
   function handleSubscribeSpecialPackage(packageId, cost) {
     if (expenseBal < cost) {
-      toast.error("Insufficient balance. Please deposit to continue");
+      showAlert({
+        status: "error",
+        text: "Insufficient balance. Please deposit to continue",
+        link: "/app/all_deposit",
+        buttonMessage: "Go to Deposit",
+      });
+
       return;
     }
 
@@ -86,7 +113,21 @@ function AccountDetailsPage() {
     subscribePackage(data, {
       onSuccess: () => {
         queryClient.invalidateQueries();
-        toast.success("Package scubscription was successful");
+        showAlert({
+          status: "success",
+          text: "Package subscription was successful",
+          link: "/app/dashboard",
+          buttonMessage: "Go to Dashboard",
+        });
+      },
+
+      onError: (err) => {
+        showAlert({
+          status: "error",
+          text: err?.message,
+          link: "/app/all_deposit",
+          buttonMessage: "Go to Deposit",
+        });
       },
     });
   }

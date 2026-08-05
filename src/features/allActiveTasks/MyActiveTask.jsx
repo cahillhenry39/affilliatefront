@@ -9,7 +9,6 @@ import { useQueryClient } from "@tanstack/react-query";
 import { formatCurrency } from "../../utils/helpers";
 import SpinnerAndText from "../../ui/SpinnerAndText";
 import StarRating from "../../ui/StarRating";
-import toast from "react-hot-toast";
 import Headings from "../../ui/Headings";
 import FormRow from "../../ui/FormRow";
 
@@ -21,6 +20,7 @@ import ClaimRewardActionButton from "../../ui/ClaimRewardActionButton";
 import EmptyList from "../../ui/EmptyList";
 import { getConfetti } from "../../utils/confetti";
 import { useGetCompanyDetails } from "../../services/useCompanyDetails";
+import { useAlert } from "../../hooks/AlertContext";
 
 const coloringAndExpand = keyframes`
 0% {    color: red; transform: scale(1);}
@@ -169,6 +169,8 @@ function MyActiveTask({
   mainTaskId,
   taskPaymentClaimed,
 }) {
+  const { showAlert } = useAlert();
+
   const queryClient = useQueryClient();
   const confetti = getConfetti();
 
@@ -202,11 +204,21 @@ function MyActiveTask({
             origin: { y: 0.6 },
           });
 
-          toast.success(
-            `You have successfully claimed ${formatCurrency(
+          showAlert({
+            status: "success",
+            text: `You have successfully claimed ${formatCurrency(
               totalAmountNotClaimed,
             )}`,
-          );
+            link: "/app/dashboard",
+            buttonMessage: "Go to Dashboard",
+          });
+        },
+
+        onError: (err) => {
+          showAlert({
+            status: "error",
+            text: err?.message,
+          });
         },
       },
     );
@@ -214,25 +226,40 @@ function MyActiveTask({
 
   function handleRating() {
     if (!rate) {
-      toast.error("You need to rate at least 4 stars");
+      showAlert({
+        status: "info",
+        text: "You need to rate at least 4 stars",
+        buttonMessage: "Close & Rate",
+      });
+
       return;
     }
 
     if (!rateMessage) {
-      toast.error("You need to write a good comments");
+      setError("You need to write a good comments");
+      setTimeout(() => {
+        setError("");
+      }, 4000);
+
       return;
     }
 
     if (rateMessage.length < 4) {
-      toast.error("Comment must be above 4 letters long");
+      setError("Comment must be above 4 letters long and above");
+      setTimeout(() => {
+        setError("");
+      }, 4000);
+
       return;
     }
 
     if (rate < 4) {
-      setError("You need to rate at least 4 stars");
-      setTimeout(() => {
-        setError("");
-      }, 4000);
+      showAlert({
+        status: "info",
+        text: "You need to rate at least 4 stars",
+        buttonMessage: "Close & Rate",
+      });
+
       return;
     }
 

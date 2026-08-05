@@ -95,10 +95,6 @@ export function useUpdateMyTodaysTask() {
 export function useClaimTodaysTaskEarnings() {
   const { mutate: claimRewardHandler, isPending } = useMutation({
     mutationFn: claimTodaysTaskEarnings,
-
-    onError: (err) => {
-      toast.error(err.message);
-    },
   });
 
   return { claimRewardHandler, isPending };

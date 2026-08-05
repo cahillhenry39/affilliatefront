@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { HiClipboardDocument } from "react-icons/hi2";
 import QRCode from "react-qr-code";
 import styled, { css } from "styled-components";
+import Input from "../../ui/Input";
 
 const ReferralCOndenformationContainer = styled.div`
   display: flex;
@@ -135,7 +136,7 @@ function ReferralContentContainer({ referralUrl, isDarkMode }) {
     function () {
       if (hasCopiedText) toast.success(`${copiedText} copied`);
     },
-    [hasCopiedText, copiedText]
+    [hasCopiedText, copiedText],
   );
 
   return (
@@ -171,7 +172,14 @@ function ReferralContentContainer({ referralUrl, isDarkMode }) {
         <span>Your referral code</span>
 
         <TextReferralLink $isDarkMode={isDarkMode?.toString()}>
-          <p>https://....{referralUrl?.slice(8, 21)}</p>
+          <Input
+            style={{
+              padding: "0.5rem 1rem",
+              fontSize: "1.3rem",
+            }}
+            defaultValue={referralUrl}
+            readOnly
+          />
           <HiClipboardDocument onClick={() => copyToClipboard(referralUrl)} />
         </TextReferralLink>
       </MainReferralCodeContainer>

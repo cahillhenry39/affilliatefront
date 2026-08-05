@@ -10,11 +10,12 @@ import {
   useDepositWithToken,
   useMoneyFromBalance,
 } from "../../features/transaction/useTransaction";
-import toast from "react-hot-toast";
 import { EarthLock } from "lucide-react";
 import TokenDeposits from "../../ui/TokenDeposits";
 import MoveFromBalance from "../../ui/MoveFromBalance";
 import { useQueryClient } from "@tanstack/react-query";
+import { useAlert } from "../../hooks/AlertContext";
+import { formatCurrency } from "../../utils/helpers";
 
 const StyledContainerHelper = styled.div`
   height: 100vh;
@@ -96,6 +97,7 @@ const DepositContainer = styled.div`
 function Deposit() {
   const [depositType, setDepositType] = useState("transfer");
   const queryClient = useQueryClient();
+  const { showAlert } = useAlert();
 
   const [tokenDepositMessage, setTokenDepositMessage] = useState("");
 
@@ -113,7 +115,11 @@ function Deposit() {
 
   function handleCreateDeposit() {
     if (!amount) {
-      toast.error("Select or provide a valid amount to continue");
+      showAlert({
+        status: "error",
+        text: "Select or provide a valid amount to continue",
+        title: "Provide an Amount",
+      });
 
       return;
     }
@@ -130,6 +136,13 @@ function Deposit() {
 
         navigate(`/app/Deposit_card-type/${id}`, { replace: true });
       },
+
+      onError: (err) => {
+        showAlert({
+          status: "error",
+          text: err?.message,
+        });
+      },
     });
   }
 
@@ -143,10 +156,25 @@ function Deposit() {
     tokenDposit(newData, {
       onError: (err) => {
         setTokenDepositMessage({ type: "error", message: err.message });
+
+        showAlert({
+          status: "error",
+          text: err?.message,
+        });
       },
       onSuccess: (data) => {
         setTokenDepositMessage({ type: "success", data: data[0] });
         queryClient.invalidateQueries();
+
+        showAlert({
+          status: "success",
+          text: `You have made a successful deposit of ${formatCurrency(
+            data?.[0]?.amount,
+          )} into your account.`,
+
+          link: "/app/dashboard",
+          buttonMessage: "Go to Dashboard",
+        });
       },
     });
   }
@@ -160,10 +188,24 @@ function Deposit() {
     moveMoneyFromBalance(newData, {
       onError: (err) => {
         setMoveMoneyMessage({ type: "error", message: err.message });
+
+        showAlert({
+          status: "error",
+          text: err?.message,
+        });
       },
       onSuccess: (data) => {
         setMoveMoneyMessage({ type: "success", data: data[0] });
         queryClient.invalidateQueries();
+
+        showAlert({
+          status: "success",
+          text: `You have successful moved ${formatCurrency(
+            data?.[0]?.amount,
+          )} to expense account.`,
+          link: "/app/dashboard",
+          buttonMessage: "Go to Dashboard",
+        });
       },
     });
   }
@@ -242,6 +284,7 @@ function Deposit() {
               balance={balance}
               expenseBal={expenseBal}
               isWorking={isMovingMoney}
+              showAlert={showAlert}
             />
           </DepositContainer>
         </StyledDeposit>
